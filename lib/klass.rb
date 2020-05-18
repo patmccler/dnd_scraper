@@ -25,5 +25,9 @@ class Klass
       class_names = Scraper.scrape_classes
       class_names.map { |class_name| Klass.new(class_name) }
     end
+
+    def find_by_name(name)
+      all.find { |klass| klass.name.casecmp(name).zero? }
+    end
   end
 end
