@@ -20,6 +20,7 @@ class Cli
   end
 
   def spell_by_class
+    classes = @scraper.classes
     puts "Enter a class from the list to see which spells that class knows."
   end
 end
