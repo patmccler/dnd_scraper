@@ -14,9 +14,14 @@ class Cli
     spell_by_class
   end
 
-  # def classes
+  def classes
+    @classes ||= generate_classes
+  end
 
-  # end
+  def generate_classes
+    class_names = Scraper.scrape_classes
+    class_names.map { |class_name| Klass.new(class_name) }
+  end
 
   def welcome
     puts "Hello, welcome to this DND Spell lookup app!"
@@ -24,8 +29,8 @@ class Cli
   end
 
   def spell_by_class
-    classes = Scraper.scrape_classes
+
     puts "Enter a class from the list to see which spells that class knows."
-    puts classes
+    puts classes.map(&:name)
   end
 end

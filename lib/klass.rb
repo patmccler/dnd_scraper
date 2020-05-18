@@ -4,4 +4,9 @@
 # Store all of my class instance data
 
 class Klass
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
 end
