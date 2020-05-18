@@ -11,7 +11,7 @@ class Cli
 
   def call
     welcome
-    spell_by_class
+    promt_for_class_choice
   end
 
   def classes
@@ -24,8 +24,32 @@ class Cli
     puts "and can be learned by one or more classes"
   end
 
-  def spell_by_class
-    puts "Enter a class from the list to see which spells that class knows."
-    puts classes.map(&:name)
+  def promt_for_class_choice
+    puts "Enter a class number or name from the list"
+    puts "to see which spells that class has available."
+    classes.each_with_index do |klass, i|
+      puts "#{i + 1}. #{klass.name}"
+    end
+
+    input = user_input
+    until input.casecmp("exit").zero?
+      puts "Start of until loop"
+      klass = Klass.find_by_name_or_number(input) #TODO
+      if klass
+        prompt_for_klass_spell_choice(klass)
+        input = ""
+      else
+        ## TODO Handle "List" as a choice
+
+        input = user_input
+      end
+    end
+  end
+
+  def prompt_for_klass_spell_choice(klass)
+  end
+
+  def user_input
+    gets.chomp
   end
 end

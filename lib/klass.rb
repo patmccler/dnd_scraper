@@ -29,5 +29,13 @@ class Klass
     def find_by_name(name)
       all.find { |klass| klass.name.casecmp(name).zero? }
     end
+
+    def find_by_number(num)
+      false
+    end
+
+    def find_by_name_or_number(input)
+      find_by_name(input) || find_by_number(input) #stubbed
+    end
   end
 end
