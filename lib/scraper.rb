@@ -7,7 +7,7 @@ class Scraper
 
   # sets the @classes variable
   def self.scrape_classes
-    doc = Nokogiri::HTML(HTTParty.get(URL))
+    doc = Nokogiri::HTML(HTTParty.get(URL).body)
 
     # gets the second column of the table under character
     # these are the names of the available classes
