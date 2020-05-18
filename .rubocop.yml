@@ -17,6 +17,9 @@ AllCops:
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
+Layour/EmptyLinesAroundAttributeAccessors:
+ Enable: true
+
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
@@ -103,4 +106,7 @@ Security/Open:
   Enabled: false
 
 Style/ClassVars:
+  Enabled: false
+
+Sttyle/SlicingWithRange:
   Enabled: false
