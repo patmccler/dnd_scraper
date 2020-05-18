@@ -11,8 +11,7 @@ class Scraper
 
     # gets the second column of the table under character
     # these are the names of the available classes
-    doc.css("#character + table tbody td:nth-child(2) a")
-       .map { |link| link.text }
+    doc.css("#character + table tbody td:nth-child(2) a").map(&:text)
   end
 
   # moved from scrape class above may need this later
@@ -20,10 +19,10 @@ class Scraper
     # gets the last column of the table at the bottom
     # these are the links to the class spell lists
     @classes = doc.css("#spellcasting + table tbody td:last-child a")
-                .each_with_object({}) do |link, classes|
-                  href = link["href"]
-                  klass = href.split('/')[2].sub("_spells","").capitalize
-                  classes[klass] = href
-                end
+                  .each_with_object({}) do |link, classes|
+                    href = link["href"]
+                    klass = href.split("/")[2].sub("_spells", "").capitalize
+                    classes[klass] = href
+                  end
   end
 end

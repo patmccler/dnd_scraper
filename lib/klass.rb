@@ -26,5 +26,4 @@ class Klass
       class_names.map { |class_name| Klass.new(class_name) }
     end
   end
-
 end

@@ -21,7 +21,7 @@ class Cli
   def welcome
     puts "Hello, welcome to this DND Spell lookup app!"
     puts "Spells have both a level and a school,"
-    puts " and can be learned by one or more classes"
+    puts "and can be learned by one or more classes"
   end
 
   def spell_by_class
