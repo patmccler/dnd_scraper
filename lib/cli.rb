@@ -6,7 +6,7 @@
 class Cli
 
   def initialize
-    @scraper = Scraper.new
+    # build_classes
   end
 
   def call
@@ -14,13 +14,17 @@ class Cli
     spell_by_class
   end
 
+  # def classes
+
+  # end
+
   def welcome
     puts "Hello, welcome to this DND Spell lookup app!"
     puts "Spells have both a level and a school, and can be learned by one or more classes"
   end
 
   def spell_by_class
-    classes = @scraper.classes
+    classes = Scraper.scrape_classes
     puts "Enter a class from the list to see which spells that class knows."
     puts classes
   end
