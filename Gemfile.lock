@@ -30,6 +30,8 @@ GEM
       rexml
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
+    rubocop-performance (1.5.2)
+      rubocop (>= 0.71.0)
     ruby-progressbar (1.10.1)
     unicode-display_width (1.7.0)
 
@@ -42,6 +44,7 @@ DEPENDENCIES
   pry
   require_all
   rubocop
+  rubocop-performance
 
 BUNDLED WITH
    2.1.4
