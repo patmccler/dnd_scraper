@@ -17,7 +17,7 @@ AllCops:
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
-Layour/EmptyLinesAroundAttributeAccessors:
+Layout/EmptyLinesAroundAttributeAccessors:
  Enable: true
 
 Layout/SpaceAroundMethodCallOperator:
