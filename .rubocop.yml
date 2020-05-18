@@ -108,5 +108,5 @@ Security/Open:
 Style/ClassVars:
   Enabled: false
 
-Sttyle/SlicingWithRange:
+Style/SlicingWithRange:
   Enabled: false
