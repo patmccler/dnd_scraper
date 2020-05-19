@@ -5,6 +5,11 @@
 class Scraper
   URL = "https://5thsrd.org/".freeze
 
+  # This shouldnt change across a given run of the program, so save it
+  def self.doc
+    @doc ||= Nokogiri::HTML(HTTParty.get(URL).body)
+  end
+
   # sets the @classes variable
   def self.scrape_classes
     doc = Nokogiri::HTML(HTTParty.get(URL).body)
@@ -18,7 +23,7 @@ class Scraper
   def self.class_spell_links
     # gets the last column of the table at the bottom
     # these are the links to the class spell lists
-    @classes = doc.css("#spellcasting + table tbody td:last-child a")
+    classes = doc.css("#spellcasting + table tbody td:last-child a")
                   .each_with_object({}) do |link, classes|
                     href = link["href"]
                     klass = href.split("/")[2].sub("_spells", "").capitalize
@@ -27,7 +32,18 @@ class Scraper
   end
 
   def self.scrape_class_spells(class_name)
+    class_spell_path = scrape_class_spell_link(class_name)
+
+
+    class_spell_doc = Nokogiri::HTML(HTTParty.get(URL + class_spell_path).body)
+
+    binding.pry
+
     ["fireball"]
     # TODO Write me
+  end
+
+  def self.scrape_class_spell_link(class_name)
+    doc.css("#spellcasting + table a[href*=#{class_name.downcase}]").attr("href").value
   end
 end
