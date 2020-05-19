@@ -5,28 +5,18 @@
 
 class Klass
   attr_reader :name
+  extend Memoable::ClassMethods
+  include Memoable::InstanceMethods
 
   def initialize(name)
     @name = name
-    tap(&:save)
-  end
-
-  def save
-    self.class.all << self
+    save
   end
 
   class << self
-    def all
-      @all ||= generate_classes
-    end
-
-    def count
-      all.size
-    end
-
     # called first time, scrapes for class names and makes those classes
-    def generate_classes
-      @all = []
+    # memoable looks for this when first calling .all
+    def generate_all
       class_names = Scraper.scrape_classes
       class_names.map { |class_name| Klass.new(class_name) }
     end
