@@ -5,6 +5,7 @@
 
 class Klass
   attr_reader :name
+
   extend Memoable::ClassMethods
   extend Findable::ClassMethods
   include Memoable::InstanceMethods
