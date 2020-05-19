@@ -33,7 +33,7 @@ class Cli
 
     until equals_exit(input = user_input)
       puts "Start of until loop"
-      klass = Klass.find_by_name_or_number(input) #TODO
+      klass = Klass.find_by_name_or_number(input)
       if klass
         # puts "#{klass.name} chosen!"
         prompt_for_klass_spell_choice(klass)
@@ -55,22 +55,31 @@ class Cli
       print "Unfortunately, it doesn't look like #{name}"
       print " can learn any spells!\n"
     else
-      puts "#{name}s have #{spells.count} spells."
-      puts "Enter a level 0 - 9 to see spells of that level."
-      puts "Enter 'all' to see them all at once."
-      puts "Enter a spell name to see that spell's info."
-
+      class_spell_prompt(name, spells.count)
       until equals_exit(input = user_input)
-        ## Check for 0-9, or spell name here
-
         if (0..9).cover? int_from_string(input)
           print_spells_at_level(spells, int_from_string(input))
+        elsif input.eql?("all")
+          print_spells(spells)
         else
-          #TODO!
+          # TODO!
           puts "I couldnt find that spell"
         end
+        class_spell_prompt(name, spells.count)
       end
     end
+  end
+
+  def class_spell_prompt(name, spell_count)
+    puts "#{name}s have #{spell_count} spells."
+    puts "Enter a level 0 - 9 to see spells of that level for #{name}."
+    puts "Enter 'all' to see them all at once."
+    puts "Enter a spell name to see that spell's info."
+  end
+
+  def print_spells(spells)
+    # TODO Make this pretty
+    puts spells.map(&:name)
   end
 
   def print_spells_at_level(spells, level)
