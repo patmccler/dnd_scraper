@@ -11,9 +11,13 @@ class Spell
 
   def initialize(name, level, link)
     @name = name
-    @level = level
+    self.level = level
     @link = link
     save
+  end
+
+  def level=(input)
+    @level = input.scan(/\d+/)[0].to_i
   end
 
   def self.find_or_create(name, level, link)

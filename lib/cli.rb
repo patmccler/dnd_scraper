@@ -58,6 +58,8 @@ class Cli
       puts "Enter 'all' to see them all at once"
       puts "Enter a spell name to see that spell's info"
       puts klass.spells.count
+      binding.pry
+
     end
   end
 
