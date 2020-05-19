@@ -4,14 +4,19 @@
 class Spell
   attr_reader :name, :level
 
+  extend Memoable::ClassMethods
+  extend Findable::ClassMethods
+  include Memoable::InstanceMethods
+
+
   def initialize(name, level, link)
     @name = name
     @level = level
     @link = link
+    save
   end
 
   def self.find_or_create(name, level, link)
-    #todo make this also find!
-    Spell.new(name, level, link)
+    find_by_name(name) || new(name, level, link)
   end
 end
