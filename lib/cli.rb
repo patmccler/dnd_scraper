@@ -36,7 +36,7 @@ class Cli
       puts "Start of until loop"
       klass = Klass.find_by_name_or_number(input) #TODO
       if klass
-        puts "#{klass.name} chosen!"
+        # puts "#{klass.name} chosen!"
         prompt_for_klass_spell_choice(klass)
       else
         puts "I'm sorry, I didn't quite get that. Try again?"
@@ -46,6 +46,8 @@ class Cli
   end
 
   def prompt_for_klass_spell_choice(klass)
+    puts "You have chosen #{klass.name} spells."
+    puts klass.spells
   end
 
   def user_input

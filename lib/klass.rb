@@ -14,6 +14,7 @@ class Klass
   def save
     self.class.all << self
   end
+
   class << self
     def all
       @all ||= generate_classes
@@ -39,7 +40,11 @@ class Klass
     end
 
     def find_by_name_or_number(input)
-      find_by_name(input) || find_by_number(input) #stubbed
+      find_by_name(input) || find_by_number(input)
     end
+  end
+
+  def spells
+    ["fireball"]
   end
 end
