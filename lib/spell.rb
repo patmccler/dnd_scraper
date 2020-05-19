@@ -4,8 +4,14 @@
 class Spell
   attr_reader :name, :level
 
-  def initialize(name, level)
+  def initialize(name, level, link)
     @name = name
     @level = level
+    @link = link
+  end
+
+  def self.find_or_create(name, level, link)
+    #todo make this also find!
+    Spell.new(name, level, link)
   end
 end

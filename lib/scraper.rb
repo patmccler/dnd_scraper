@@ -31,19 +31,36 @@ class Scraper
                   end
   end
 
-  def self.scrape_class_spells(class_name)
-    class_spell_path = scrape_class_spell_link(class_name)
+  def self.scrape_class_spells(klass)
+    class_spell_path = scrape_class_spell_link(klass.name)
 
+    spells = []
+    unless class_spell_path.nil?
+      spells = scrape_spells_from_link_by_level(URL + class_spell_path)
 
-    class_spell_doc = Nokogiri::HTML(HTTParty.get(URL + class_spell_path).body)
-
+    end
     binding.pry
+    spells
+  end
 
-    ["fireball"]
-    # TODO Write me
+  def self.scrape_spells_from_link_by_level(url)
+    spell_doc = Nokogiri::HTML(HTTParty.get(url).body)
+
+    spells = spell_doc.css("h2").map do |section|
+      level = section.text
+      list = section.next_element
+
+      list.css("a").map do |anchor|
+        name = anchor.text
+        link = anchor["href"].gsub("../../..", "")
+        Spell.find_or_create(name, level, link)
+      end
+    end.flatten
+
+
   end
 
   def self.scrape_class_spell_link(class_name)
-    doc.css("#spellcasting + table a[href*=#{class_name.downcase}]").attr("href").value
+    doc.css("#spellcasting + table a[href*=#{class_name.downcase}]").attr("href")&.value
   end
 end

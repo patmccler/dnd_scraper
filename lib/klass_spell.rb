@@ -9,5 +9,12 @@ class KlassSpell
   def initialize(klass, spell)
     @klass = klass
     @spell = spell
+    save
+  end
+
+  def self.create_many_from_class_and_spell_array(klass, spell_array)
+    spell_array.each do |spell|
+      new(klass, spell)
+    end
   end
 end
