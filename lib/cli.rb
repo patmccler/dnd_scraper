@@ -31,8 +31,7 @@ class Cli
       puts "#{i + 1}. #{klass.name}"
     end
 
-    input = user_input
-    until equals_exit(input)
+    until equals_exit(input = user_input)
       puts "Start of until loop"
       klass = Klass.find_by_name_or_number(input) #TODO
       if klass
@@ -41,7 +40,6 @@ class Cli
       else
         puts "I'm sorry, I didn't quite get that. Try again?"
       end
-      input = user_input
     end
   end
 
@@ -61,15 +59,30 @@ class Cli
       puts "Enter a level 0 - 9 to see spells of that level."
       puts "Enter 'all' to see them all at once."
       puts "Enter a spell name to see that spell's info."
-      input = user_input
 
-      until equals_exit(input)
+      until equals_exit(input = user_input)
         ## Check for 0-9, or spell name here
 
-
+        if (0..9).cover? int_from_string(input)
+          print_spells_at_level(spells, int_from_string(input))
+        else
+          #TODO!
+          puts "I couldnt find that spell"
+        end
       end
-
     end
+  end
+
+  def print_spells_at_level(spells, level)
+    spells = spells.select { |spell| spell.level == level }
+    puts "Level #{level} spells:"
+    puts spells.map(&:name)
+  end
+
+  # nil.to_i == 0, so second line is needed
+  def int_from_string(input)
+    int = input.scan(/\-?\d+/)[0]
+    int.to_i if int
   end
 
   def user_input
