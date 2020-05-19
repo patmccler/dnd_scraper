@@ -8,6 +8,7 @@ class Spell
   extend Findable::ClassMethods
   include Memoable::InstanceMethods
 
+  LEVELS = (0..9).freeze
 
   def initialize(name, level, link)
     @name = name
@@ -22,5 +23,9 @@ class Spell
 
   def self.find_or_create(name, level, link)
     find_by_name(name) || new(name, level, link)
+  end
+
+  def self.valid_level?(level)
+    LEVELS.cover?(level)
   end
 end

@@ -7,6 +7,7 @@ class Cli
   def call
     welcome
     prompt_for_class_choice
+    farewell
   end
 
   def classes
@@ -19,6 +20,10 @@ class Cli
     puts "and can be learned by one or more classes.\n\n"
   end
 
+  def farewell
+    puts "Thanks for taking a look!"
+  end
+
   def prompt_for_class_choice
     choose_class_prompt
     print_class_list
@@ -26,16 +31,19 @@ class Cli
   end
 
   def handle_input_to_choose_class
-    until equals_ignore_case(input = user_input, "exit")
+    until eq_no_case?(input = user_input, "exit") || eq_no_case?(input, "back")
       if (klass = Klass.find_by_name_or_number(input))
-        prompt_for_klass_spell_choice(klass)
-      elsif equals_ignore_case(input, "list")
+        # promt_for_klass_spell_choice returns last value, exit if needed
+        input = prompt_for_klass_spell_choice(klass)
+        break if eq_no_case?(input, "exit")
+      elsif eq_no_case?(input, "list")
         print_class_list
       else
         puts "Invalid Input. Try again?"
       end
       choose_class_prompt
     end
+    input
   end
 
   def choose_class_prompt
@@ -51,8 +59,8 @@ class Cli
     puts
   end
 
-  def equals_ignore_case(str1, str2)
-    str1.casecmp(str2).zero?
+  def eq_no_case?(str1, str2)
+    str1.casecmp(str2).zero? if str1 && str2
   end
 
   def prompt_for_klass_spell_choice(klass)
@@ -68,22 +76,21 @@ class Cli
   end
 
   def handle_input_to_list_spells(klass_name, spells)
-    until equals_ignore_case(input = user_input, "exit")
-      if (0..9).cover? int_from_string(input)
-        print_spells_at_level(spells, int_from_string(input))
-      elsif input.eql?("all")
-        print_spells(spells)
-      elsif (spell = spells.find { |s| equals_ignore_case(s.name, input) })
+    until eq_no_case?(input = user_input, "exit") || eq_no_case?(input, "back")
+      if Spell.valid_level?(int = i_from_s(input)) || eq_no_case?(input, "all")
+        print_spells_by_level(spells, int)
+      elsif (spell = spells.find { |s| eq_no_case?(s.name, input) })
         print_spell_info(spell)
       else
         puts "Invalid Input. Try again?"
       end
       class_spell_prompt(klass_name, spells.count)
     end
+    input
   end
 
   def print_spell_info(spell)
-    # TODO get specifics of spell here
+    # TODO: get specifics of spell here
     puts spell.name
   end
 
@@ -94,19 +101,14 @@ class Cli
     puts "Enter a spell name to see that spell's info."
   end
 
-  def print_spells(spells)
-    # TODO Make this pretty
-    # also check if empty, and call that out
+  def print_spells_by_level(spells, level = nil)
+    #TODO: make pretty - table?
+    spells = spells.select { |spell| spell.level == level } if level
+    puts "Level #{level} spells:" if level
     puts spells.map(&:name)
   end
 
-  def print_spells_at_level(spells, level)
-    spells = spells.select { |spell| spell.level == level }
-    puts "Level #{level} spells:"
-    puts spells.map(&:name)
-  end
-
-  def int_from_string(input)
+  def i_from_s(input)
     int = input.scan(/\-?\d+/)[0]
     int.to_i if int.is_a?(String)
   end
