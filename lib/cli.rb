@@ -6,6 +6,7 @@
 class Cli
   def call
     welcome
+    # TODO: choose by class, level, type?
     prompt_for_class_choice
     farewell
   end
@@ -33,11 +34,9 @@ class Cli
   def handle_input_to_choose_class
     until eq_no_case?(input = user_input, "exit") || eq_no_case?(input, "back")
       if (klass = Klass.find_by_name_or_number(input))
-        # promt_for_klass_spell_choice returns last value, exit if needed
-        input = prompt_for_klass_spell_choice(klass)
-        break if eq_no_case?(input, "exit")
-      elsif eq_no_case?(input, "list")
-        print_class_list
+        # sets input so exit can bubble up if needed
+        break if eq_no_case?(input = prompt_for_choose_spells(klass), "exit")
+      elsif eq_no_case?(input, "list") then print_class_list
       else
         puts "Invalid Input. Try again?"
       end
@@ -63,7 +62,7 @@ class Cli
     str1.casecmp(str2).zero? if str1 && str2
   end
 
-  def prompt_for_klass_spell_choice(klass)
+  def prompt_for_choose_spells(klass)
     spells = klass.spells
 
     if spells.empty?
@@ -77,8 +76,8 @@ class Cli
 
   def handle_input_to_list_spells(klass_name, spells)
     until eq_no_case?(input = user_input, "exit") || eq_no_case?(input, "back")
-      if Spell.valid_level?(int = i_from_s(input)) || eq_no_case?(input, "all")
-        print_spells_by_level(spells, int)
+      if Spell.valid_level?(lvl = i_from_s(input)) || eq_no_case?(input, "all")
+        print_spells_by_level(spells, lvl)
       elsif (spell = spells.find { |s| eq_no_case?(s.name, input) })
         print_spell_info(spell)
       else
