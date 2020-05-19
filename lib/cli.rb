@@ -50,7 +50,7 @@ class Cli
     spells = klass.spells
 
     if spells.empty?
-      print "Unfortunately, it doesn't look like #{name}"
+      print "Unfortunately, it doesn't look like #{klass.name}"
       print " can learn any spells!\n"
     else
       class_spell_prompt(klass.name, spells.count)
@@ -96,10 +96,9 @@ class Cli
     puts spells.map(&:name)
   end
 
-  # nil.to_i == 0, so second line is needed
   def int_from_string(input)
     int = input.scan(/\-?\d+/)[0]
-    int.to_i if int
+    int.to_i if int.is_a?(String)
   end
 
   def user_input
