@@ -19,6 +19,10 @@ class Klass
       @all ||= generate_classes
     end
 
+    def count
+      all.size
+    end
+
     # called first time, scrapes for class names and makes those classes
     def generate_classes
       @all = []
@@ -31,7 +35,7 @@ class Klass
     end
 
     def find_by_number(num)
-      false
+      all[num.to_i - 1] if (1..count).cover?(num.to_i)
     end
 
     def find_by_name_or_number(input)
