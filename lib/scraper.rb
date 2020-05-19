@@ -25,4 +25,9 @@ class Scraper
                     classes[klass] = href
                   end
   end
+
+  def self.scrape_class_spells(class_name)
+    ["fireball"]
+    # TODO Write me
+  end
 end
