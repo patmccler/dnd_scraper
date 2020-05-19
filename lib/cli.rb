@@ -4,11 +4,6 @@
 # This will have to invoce Scraper
 
 class Cli
-
-  def initialize
-    # build_classes
-  end
-
   def call
     welcome
     prompt_for_class_choice
@@ -31,6 +26,10 @@ class Cli
       puts "#{i + 1}. #{klass.name}"
     end
 
+    handle_input_to_choose_class
+  end
+
+  def handle_input_to_choose_class
     until equals_ignore_case(input = user_input, "exit")
       puts "Start of until loop"
       klass = Klass.find_by_name_or_number(input)
@@ -47,28 +46,30 @@ class Cli
     str1.casecmp(str2).zero?
   end
 
-
   def prompt_for_klass_spell_choice(klass)
     spells = klass.spells
-    name = klass.name
+
     if spells.empty?
       print "Unfortunately, it doesn't look like #{name}"
       print " can learn any spells!\n"
     else
-      class_spell_prompt(name, spells.count)
-      until equals_ignore_case(input = user_input, "exit")
-        if (0..9).cover? int_from_string(input)
-          print_spells_at_level(spells, int_from_string(input))
-        elsif input.eql?("all")
-          print_spells(spells)
-        elsif (spell = spells.find { |s| equals_ignore_case(s.name, input) })
-          print_spell_info(spell)
-        else
-          # TODO!
-          puts "I couldnt find that spell"
-        end
-        class_spell_prompt(name, spells.count)
+      class_spell_prompt(klass.name, spells.count)
+      handle_input_to_list_spells(klass.name, spells)
+    end
+  end
+
+  def handle_input_to_list_spells(klass_name, spells)
+    until equals_ignore_case(input = user_input, "exit")
+      if (0..9).cover? int_from_string(input)
+        print_spells_at_level(spells, int_from_string(input))
+      elsif input.eql?("all")
+        print_spells(spells)
+      elsif (spell = spells.find { |s| equals_ignore_case(s.name, input) })
+        print_spell_info(spell)
+      else
+        puts "Invalid Input. Try again?"
       end
+      class_spell_prompt(klass_name, spells.count)
     end
   end
 
