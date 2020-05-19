@@ -47,7 +47,18 @@ class Cli
 
   def prompt_for_klass_spell_choice(klass)
     puts "You have chosen #{klass.name} spells."
-    puts klass.spells.map(&:name)
+    spells = klass.spells
+
+    if spells.empty?
+      print "Unfortunately, it doesn't look like #{klass.name}"
+      print " can learn any spells!\n"
+    else
+
+      puts "Enter a level 0 - 9 to see those spells."
+      puts "Enter 'all' to see them all at once"
+      puts "Enter a spell name to see that spell's info"
+      puts klass.spells.count
+    end
   end
 
   def user_input
