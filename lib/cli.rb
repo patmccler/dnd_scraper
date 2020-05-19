@@ -16,30 +16,39 @@ class Cli
   def welcome
     puts "Hello, welcome to this DND Spell lookup app!"
     puts "Spells have both a level and a school,"
-    puts "and can be learned by one or more classes"
+    puts "and can be learned by one or more classes.\n\n"
   end
 
   def prompt_for_class_choice
-    puts "Enter a class number or name from the list"
-    puts "to see which spells that class has available."
-    classes.each_with_index do |klass, i|
-      puts "#{i + 1}. #{klass.name}"
-    end
-
+    choose_class_prompt
+    print_class_list
     handle_input_to_choose_class
   end
 
   def handle_input_to_choose_class
     until equals_ignore_case(input = user_input, "exit")
-      puts "Start of until loop"
-      klass = Klass.find_by_name_or_number(input)
-      if klass
-        # puts "#{klass.name} chosen!"
+      if (klass = Klass.find_by_name_or_number(input))
         prompt_for_klass_spell_choice(klass)
+      elsif equals_ignore_case(input, "list")
+        print_class_list
       else
-        puts "I'm sorry, I didn't quite get that. Try again?"
+        puts "Invalid Input. Try again?"
       end
+      choose_class_prompt
     end
+  end
+
+  def choose_class_prompt
+    puts "Enter a class number or name from the list"
+    puts "to see which spells that class has available."
+    puts "Enter 'list' to see the list again."
+  end
+
+  def print_class_list
+    classes.each_with_index do |klass, i|
+      puts "#{i + 1}. #{klass.name}"
+    end
+    puts
   end
 
   def equals_ignore_case(str1, str2)
@@ -50,8 +59,8 @@ class Cli
     spells = klass.spells
 
     if spells.empty?
-      print "Unfortunately, it doesn't look like #{klass.name}"
-      print " can learn any spells!\n"
+      print "Unfortunately, it doesn't look like #{klass.name}s"
+      print " can learn any spells!\n\n"
     else
       class_spell_prompt(klass.name, spells.count)
       handle_input_to_list_spells(klass.name, spells)
@@ -87,6 +96,7 @@ class Cli
 
   def print_spells(spells)
     # TODO Make this pretty
+    # also check if empty, and call that out
     puts spells.map(&:name)
   end
 
