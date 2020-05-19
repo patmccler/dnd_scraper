@@ -11,7 +11,7 @@ class Cli
 
   def call
     welcome
-    promt_for_class_choice
+    prompt_for_class_choice
   end
 
   def classes
@@ -24,7 +24,7 @@ class Cli
     puts "and can be learned by one or more classes"
   end
 
-  def promt_for_class_choice
+  def prompt_for_class_choice
     puts "Enter a class number or name from the list"
     puts "to see which spells that class has available."
     classes.each_with_index do |klass, i|
@@ -32,7 +32,7 @@ class Cli
     end
 
     input = user_input
-    until input.casecmp("exit").zero?
+    until equals_exit(input)
       puts "Start of until loop"
       klass = Klass.find_by_name_or_number(input) #TODO
       if klass
@@ -45,20 +45,29 @@ class Cli
     end
   end
 
-  def prompt_for_klass_spell_choice(klass)
-    puts "You have chosen #{klass.name} spells."
-    spells = klass.spells
+  def equals_exit(input)
+    input.casecmp("exit").zero?
+  end
 
+
+  def prompt_for_klass_spell_choice(klass)
+    spells = klass.spells
+    name = klass.name
     if spells.empty?
-      print "Unfortunately, it doesn't look like #{klass.name}"
+      print "Unfortunately, it doesn't look like #{name}"
       print " can learn any spells!\n"
     else
+      puts "#{name}s have #{spells.count} spells."
+      puts "Enter a level 0 - 9 to see spells of that level."
+      puts "Enter 'all' to see them all at once."
+      puts "Enter a spell name to see that spell's info."
+      input = user_input
 
-      puts "Enter a level 0 - 9 to see those spells."
-      puts "Enter 'all' to see them all at once"
-      puts "Enter a spell name to see that spell's info"
-      puts klass.spells.count
-      binding.pry
+      until equals_exit(input)
+        ## Check for 0-9, or spell name here
+
+
+      end
 
     end
   end
