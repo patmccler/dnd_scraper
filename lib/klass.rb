@@ -24,13 +24,14 @@ class Klass
   end
 
   def spells
-    spells = KlassSpell.all.select{ |klass_spell| klass_spell.klass == self }
+    klass_spells = KlassSpell.all.select{ |klass_spell| klass_spell.klass == self }
 
-    if spells.empty?
-      Scraper.scrape_class_spells(self).each do |class_spell|
-        ##Create each klass_spell
-        puts class_spell
-      end
+    if klass_spells.empty?
+      spells = Scraper.scrape_class_spells(self)
+
+      klass_spells = KlassSpell.create_many_from_spell_array(self, spells)
     end
+
+    klass_spells.map(&:spell)
   end
 end

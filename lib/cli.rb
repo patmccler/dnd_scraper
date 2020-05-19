@@ -47,7 +47,7 @@ class Cli
 
   def prompt_for_klass_spell_choice(klass)
     puts "You have chosen #{klass.name} spells."
-    puts klass.spells
+    puts klass.spells.map(&:name)
   end
 
   def user_input

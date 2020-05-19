@@ -12,8 +12,8 @@ class KlassSpell
     save
   end
 
-  def self.create_many_from_class_and_spell_array(klass, spell_array)
-    spell_array.each do |spell|
+  def self.create_many_from_spell_array(klass, spell_array)
+    spell_array.map do |spell|
       new(klass, spell)
     end
   end
