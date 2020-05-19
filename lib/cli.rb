@@ -31,7 +31,7 @@ class Cli
       puts "#{i + 1}. #{klass.name}"
     end
 
-    until equals_exit(input = user_input)
+    until equals_ignore_case(input = user_input, "exit")
       puts "Start of until loop"
       klass = Klass.find_by_name_or_number(input)
       if klass
@@ -43,8 +43,8 @@ class Cli
     end
   end
 
-  def equals_exit(input)
-    input.casecmp("exit").zero?
+  def equals_ignore_case(str1, str2)
+    str1.casecmp(str2).zero?
   end
 
 
@@ -56,11 +56,13 @@ class Cli
       print " can learn any spells!\n"
     else
       class_spell_prompt(name, spells.count)
-      until equals_exit(input = user_input)
+      until equals_ignore_case(input = user_input, "exit")
         if (0..9).cover? int_from_string(input)
           print_spells_at_level(spells, int_from_string(input))
         elsif input.eql?("all")
           print_spells(spells)
+        elsif (spell = spells.find { |s| equals_ignore_case(s.name, input) })
+          print_spell_info(spell)
         else
           # TODO!
           puts "I couldnt find that spell"
@@ -68,6 +70,11 @@ class Cli
         class_spell_prompt(name, spells.count)
       end
     end
+  end
+
+  def print_spell_info(spell)
+    # TODO get specifics of spell here
+    puts spell.name
   end
 
   def class_spell_prompt(name, spell_count)
