@@ -111,7 +111,7 @@ class Cli
 
   def print_spell_info(spell)
     # TODO: get specifics of spell here
-    puts spell.name
+    SpellViewer.new(spell).print_spell
   end
 
   def class_spell_prompt(name, spell_count)
