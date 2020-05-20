@@ -4,7 +4,7 @@
 class Spell
   attr_reader :name, :level
 
-  attr_accessor :type, :casting_time, :range, :components,
+  attr_accessor :type, :cast_time, :range, :components,
                 :duration, :description, :ritual, :concentration
 
   extend Memoable::ClassMethods

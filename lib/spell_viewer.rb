@@ -8,7 +8,7 @@ class SpellViewer
   def print_spell
     print_name
     print_sub_text
-    # print_casting_details
+    print_casting_details
     # print_description
   end
 
@@ -20,8 +20,15 @@ class SpellViewer
 
   def print_sub_text
     text = level_text(@spell.level) + @spell.type + cantrip_text(@spell.level)
-    print_center(text)
+    print_center("- #{text} -")
+  end
 
+  def print_casting_details
+    indent = 3
+    print_indent("Cast Time: #{@spell.cast_time || 'unknown'}", indent)
+    print_indent("Range: #{@spell.range || 'unknown'}", indent)
+    print_indent("Components: #{@spell.components || 'unknown'}", indent)
+    print_indent("Duration: #{@spell.duration || 'unknown'}", indent)
   end
 
   def print_center(str, line_length = LINE_LENGTH)
@@ -30,8 +37,12 @@ class SpellViewer
     else
       diff = line_length - str.length
       diff += 1 if diff.odd?
-      puts (" " * (diff / 2)) + str + ("  "* (diff / 2))
+      puts (" " * (diff / 2)) + str
     end
+  end
+
+  def print_indent(str, indent)
+    puts (" " * (indent)) + str
   end
 
   def level_text(level)
