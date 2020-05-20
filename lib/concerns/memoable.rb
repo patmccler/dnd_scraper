@@ -8,7 +8,6 @@ module Memoable
   end
 
   module ClassMethods
-
     # lets the class define a generate_all method
     # defaults to empty array if none given
     def all

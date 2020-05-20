@@ -25,7 +25,7 @@ class Klass
   end
 
   def spells
-    klass_spells = KlassSpell.all.select{ |ks| ks.klass == self }
+    klass_spells = KlassSpell.all.select { |ks| ks.klass == self }
 
     if klass_spells.empty?
       spells = Scraper.scrape_class_spells(self)
