@@ -4,6 +4,8 @@
 class Spell
   attr_reader :name, :level
 
+  attr_accessor :type
+
   extend Memoable::ClassMethods
   extend Findable::ClassMethods
   include Memoable::InstanceMethods
@@ -14,6 +16,7 @@ class Spell
     @name = name
     self.level = level
     @link = link
+    @type = ""
     save
   end
 
