@@ -42,6 +42,7 @@ class Scraper
 
   def self.scrape_spells_from_link_by_level(url)
     return [] if url == URL
+
     spell_doc = Nokogiri::HTML(HTTParty.get(url).body)
 
     spell_doc.css("h2").map do |section|
@@ -50,7 +51,7 @@ class Scraper
         link = anchor["href"].gsub("../../..", "")
         Spell.find_or_create(name, section.text, link)
       end
-    # section map, an array of arrays of spells
     end.flatten
+    # section map, an array of arrays of spells
   end
 end
