@@ -17,7 +17,7 @@ class Spell
     @name = name
     self.level = level
     @link = link
-    @type = ""
+    @type = "TEMP TYPE"
     save
   end
 

@@ -13,14 +13,13 @@ class SpellViewer
   end
 
   def print_name
-    puts "#{'#'*LINE_LENGTH}"
+    puts "#" * LINE_LENGTH
     puts "# #{@spell.name}#{' ' * (LINE_LENGTH - 4 - @spell.name.size)} #"
-    puts "#{'#'*LINE_LENGTH}"
+    puts "#" * LINE_LENGTH
   end
 
   def print_sub_text
-    text = "- #{@spell.level.to_s + ordinal(@spell.level)}"\
-         " level #{@spell.type} -"
+    text = level_text(@spell.level) + @spell.type + cantrip_text(@spell.level)
     print_center(text)
 
   end
@@ -35,16 +34,20 @@ class SpellViewer
     end
   end
 
+  def level_text(level)
+    level.positive? ? "#{level.to_s + ordinal(level)} level " : ""
+  end
+
+  def cantrip_text(level)
+    level.zero? ? " Cantrip" : ""
+  end
+
   def ordinal(num)
-    case num % 100
-    when 11, 12, 13 then 'th'
-    else
-      case num % 10
-      when 1 then 'st'
-      when 2 then 'nd'
-      when 3 then 'rd'
-      else 'th'
-      end
+    case num % 10
+    when 1 then "st"
+    when 2 then "nd"
+    when 3 then "rd"
+    else "th"
     end
   end
 end
