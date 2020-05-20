@@ -33,7 +33,7 @@ class Cli
 
   def handle_input_to_choose_class
     # Change to exit_or_back if this becomes not top level
-    loop_for_input(exit?) do |input|
+    loop_for_input(exit?, proc { choose_class_prompt }) do |input|
       if (klass = Klass.find_by_name_or_number(input))
         # sets input so exit can bubble up if needed
         input = prompt_for_choose_spells(klass)
@@ -42,7 +42,6 @@ class Cli
       else
         puts "Invalid Input. Try again?"
       end
-      choose_class_prompt
       input
     end
   end
@@ -77,7 +76,9 @@ class Cli
   end
 
   def handle_input_to_list_spells(klass_name, spells)
-    loop_for_input(exit_or_back?) do |input|
+    prompt = proc { class_spell_prompt(klass_name, spells.count) }
+
+    loop_for_input(exit_or_back?, prompt) do |input|
       if Spell.valid_level?(lvl = i_from_s(input)) || eq_no_case?(input, "all")
         print_spells_by_level(spells, lvl)
       elsif (spell = spells.find { |s| eq_no_case?(s.name, input) })
@@ -85,16 +86,19 @@ class Cli
       else
         puts "Invalid Input. Try again?"
       end
-      class_spell_prompt(klass_name, spells.count)
     end
   end
 
   # Checks input for breaking condition before and after loop
-  def loop_for_input(break_condition)
+  # optionally calls prompt on each loop if not breaking
+  def loop_for_input(break_condition, prompt = nil)
     input = user_input
     until break_condition.call(input)
       input = yield input
-      input = user_input unless break_condition.call(input)
+      unless break_condition.call(input)
+        prompt&.call
+        input = user_input
+      end
     end
     input
   end
@@ -106,7 +110,6 @@ class Cli
   def exit?
     proc { |input| eq_no_case?(input, "exit") }
   end
-
 
   def print_spell_info(spell)
     # TODO: get specifics of spell here
