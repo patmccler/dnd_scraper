@@ -26,7 +26,6 @@ class Cli
   end
 
   def prompt_for_class_choice
-    choose_class_prompt
     print_class_list
     handle_input_to_choose_class
   end
@@ -70,7 +69,6 @@ class Cli
       print "Unfortunately, it doesn't look like #{klass.name}s"
       print " can learn any spells!\n\n"
     else
-      class_spell_prompt(klass.name, spells.count)
       handle_input_to_list_spells(klass.name, spells)
     end
   end
@@ -92,12 +90,15 @@ class Cli
   # Checks input for breaking condition before and after loop
   # optionally calls prompt on each loop if not breaking
   def loop_for_input(break_condition, prompt = nil)
+    prompt&.call
     input = user_input
+
     until break_condition.call(input)
       input = yield input
       unless break_condition.call(input)
         prompt&.call
         input = user_input
+        puts
       end
     end
     input
@@ -125,9 +126,11 @@ class Cli
 
   def print_spells_by_level(spells, level = nil)
     #TODO: make pretty - table?
+    puts
     spells = spells.select { |spell| spell.level == level } if level
     puts "Level #{level} spells:" if level
     puts spells.map(&:name)
+    puts
   end
 
   def i_from_s(input)
