@@ -48,7 +48,7 @@ class Cli
   def choose_class_prompt
     puts "Enter a class number or name from the list"
     puts "to see which spells that class has available."
-    puts "Enter 'list' to see the list again."
+    puts "Enter 'list' to see the list again.\n\n"
   end
 
   def print_class_list
@@ -89,17 +89,14 @@ class Cli
 
   # Checks input for breaking condition before and after loop
   # optionally calls prompt on each loop if not breaking
+  # Nestable
   def loop_for_input(break_condition, prompt = nil)
     prompt&.call
-    input = user_input
-
-    until break_condition.call(input)
+    until break_condition.call((input = user_input))
       input = yield input
-      unless break_condition.call(input)
-        prompt&.call
-        input = user_input
-        puts
-      end
+      break if break_condition.call(input)
+
+      prompt&.call
     end
     input
   end
@@ -121,12 +118,11 @@ class Cli
     puts "#{name}s have #{spell_count} spells."
     puts "Enter a level 0 - 9 to see spells of that level for #{name}."
     puts "Enter 'all' to see them all at once."
-    puts "Enter a spell name to see that spell's info."
+    puts "Enter a spell name to see that spell's info.\n\n"
   end
 
   def print_spells_by_level(spells, level = nil)
     #TODO: make pretty - table?
-    puts
     spells = spells.select { |spell| spell.level == level } if level
     puts "Level #{level} spells:" if level
     puts spells.map(&:name)
