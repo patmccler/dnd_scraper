@@ -6,14 +6,29 @@ class SpellScraper
     tagline = spell_doc.css(".col-md-9 p:first-of-type")[0]
     cast_info = tagline.next_element
 
-    spell.ritual = tagline.text.include?("ritual")
-    spell.type = find_spell_type(tagline.text)
-    spell.cast_time = find_cast_time(cast_info)
-    spell.range = find_range(cast_info)
-    spell.components = find_components(cast_info)
-    spell.duration, spell.concentration = find_duration(cast_info)
+    update_type_info(spell, tagline.text)
+    update_casting_info(spell, cast_info)
+  end
 
-    # binding.pry
+  def self.update_type_info(spell, tagline)
+    spell.update_type_info(
+      {
+        ritual: tagline.include?("ritual"),
+        type: find_spell_type(tagline),
+      }
+    )
+  end
+
+  def self.update_casting_info(spell, cast_info_p)
+    spell.update_casting_info(
+      {
+        cast_time: find_cast_time(cast_info_p),
+        range: find_range(cast_info_p),
+        components: find_components(cast_info_p),
+        duration: find_duration(cast_info_p),
+        concentration: find_concentration(cast_info_p),
+      }
+    )
   end
 
   # Assumes the string is in one of the following formats:
@@ -42,8 +57,11 @@ class SpellScraper
   # Text elem after fourth 'strong' element
   def self.find_duration(cast_info_p)
     text = cast_info_p.css("strong:nth-of-type(4)")[0].next.text.strip
-    conc = text.include?("Concentration")
-    text = text.gsub("Concentration, ", "")
-    [text, conc]
+    text.gsub("Concentration, ", "")
+  end
+
+  def self.find_concentration(cast_info_p)
+    text = cast_info_p.css("strong:nth-of-type(4)")[0].next.text.strip
+    text.include?("Concentration")
   end
 end

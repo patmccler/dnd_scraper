@@ -26,6 +26,20 @@ class Spell
     @level = input if input.is_a?(Integer)
   end
 
+  def update_casting_info(cast_time: nil, range: nil, components: nil,
+                          duration: nil, concentration: nil)
+    @cast_time = cast_time if cast_time
+    @range = range if range
+    @components = components if components
+    @duration = duration if duration
+    @concentration = concentration unless concentration.nil?
+  end
+
+  def update_type_info(ritual: nil, type: nil)
+    @ritual = ritual unless ritual.nil?
+    @type = type if type
+  end
+
   def self.find_or_create(name, level, link)
     find_by_name(name) || new(name, level, link)
   end
