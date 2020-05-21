@@ -32,7 +32,8 @@ class SpellViewer
   end
 
   def print_sub_text
-    text = level_str(@spell.level) + @spell.type + cantrip_str(@spell.level)
+    text = level_str + @spell.type + cantrip_str +
+           ritual_str
     print_line_centered("- #{text} -", bord: "#")
   end
 
@@ -49,12 +50,13 @@ class SpellViewer
   end
 
   # Helpers for printing
-  def level_str(level)
+  def level_str
+    level = @spell.level
     level.positive? ? "#{level.to_s + ordinal(level)} level " : ""
   end
 
-  def cantrip_str(level)
-    level.zero? ? " Cantrip" : ""
+  def cantrip_str
+    @spell.level.zero? ? " Cantrip" : ""
   end
 
   def cast_time_str
@@ -71,6 +73,10 @@ class SpellViewer
 
   def duration_str
     "Duration: #{concentration_str + @spell.duration}"
+  end
+
+  def ritual_str
+    @spell.ritual? ? " (ritual)" : ""
   end
 
   def concentration_str
