@@ -14,17 +14,18 @@ class SpellListViewer
       obj[spell.level] << spell
     end
 
-    spells_h = { level: spells_h[level] } if level
+    spells_h = { level => spells_h[level] } if level
 
     spells_h.each do |spell_level, spells|
-      print_spell_group("Level #{spell_level} spells:", spells)
+      print_spell_group(title: "Level #{spell_level} Spells: #{spells.count}",
+                        spells: spells)
     end
   end
 
-  def print_spell_group(title, spells)
-    puts title
-    # print_table(spells)
-    puts spells.map(&:name)
+  def print_spell_group(title:, spells:)
+    print_line_centered(title)
+    print_table(spells.map(&:name), cols: "max")
+    # puts spells.map(&:name)
     puts
   end
 end

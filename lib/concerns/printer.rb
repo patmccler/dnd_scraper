@@ -51,37 +51,40 @@ module Printer
     curr_line.size + word.size + 2 * padding + border.size
   end
 
-  # def print_table(str_arr, cols: 1, line_length: @line_length)
-  #   col_width = (line_length / cols) / TABSIZE
-  #   max = str_arr.max_by(&:size)
-  #   max_tabs = max / TABSIZE + 1
+  def print_table(str_arr, cols: 1, line_length: @line_length)
+    max_tabs = str_arr.max_by(&:size).size / TABSIZE + 1
 
-  #   if max > col_width
-  #     if cols <= 1
-  #       # cant have 0 columns, just center the lines
-  #       str_arr.each { |str| print_line_centered(str)}
-  #     else
-  #       # fall back to less columns if it doesnt fit
-  #       print_table(str_arr, cols: cols - 1, line_length)
-  #     end
-  #   else
-  #     str_arr.each_with_index do |str, i|
-  #       str = pad_with_space str
-  #       if i % col == 0
-  #         str += "\n"
-  #       end
-  #       print str
-  #     end
-  #   end
-  # end
+    cols = line_length / TABSIZE / max_tabs if cols == "max"
 
-  # def pad_with_space(str, desired_length)
-  #   diff = desired_length - str.size
-  #   total_tabs, spaces = desired_length.divmod(TABSIZE)
+    col_width = (line_length / cols) / TABSIZE
 
 
 
-  # end
+
+    if max_tabs > col_width || cols == 1
+      if cols <= 1
+        # cant have 0 columns, just center the lines
+        str_arr.each { |str| print_line_centered(str) }
+      else
+        # fall back to less columns when it doesnt fit
+        print_table(str_arr, cols: (cols - 1), line_length: line_length)
+      end
+    else
+      str_arr.each_with_index do |str, i|
+        str = pad_with_space(str, col_width)
+        str += "\n" if ((i + 1) % cols).zero?
+        print str
+      end
+    end
+  end
+
+  # fills string with tabs and spaces to make a table
+  # str size gauranteed to be small than desired length
+  # desired length is in tabs
+  def pad_with_space(str, desired_length)
+    str_tabs = str.size / TABSIZE
+    str + "\t" * (desired_length - str_tabs)
+  end
 
   def ordinal(num)
     case num % 10
