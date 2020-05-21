@@ -1,5 +1,6 @@
 module Printer
   TABSIZE = 8
+  # TODO: organize public vs private
 
   def print_center(str, border = "", line_length = @line_length)
     unless line_length <= str.length
@@ -34,10 +35,11 @@ module Printer
 
   def print_line_centered(str, border: "", pad: 0, line_length: @line_length)
     last = str.split(" ").inject("") do |current_line, word|
-      # binding.pry
       if curr_line_size(current_line, word, pad, border) > line_length
+        # if adding the word would make the line too long,
+        # print the line as is and start the next line with the word
         print_center(current_line, border)
-        ""
+        word
       else
         current_line.empty? ? word : "#{current_line} #{word}"
       end

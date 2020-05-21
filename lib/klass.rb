@@ -15,13 +15,11 @@ class Klass
     save
   end
 
-  class << self
-    # called first time, scrapes for class names and makes those classes
-    # memoable looks for this when first calling .all
-    def generate_all
-      class_names = Scraper.scrape_classes
-      class_names.map { |class_name| Klass.new(class_name) }
-    end
+  # called first time, scrapes for class names and makes those classes
+  # memoable looks for this when first calling .all
+  def self.generate_all
+    class_names = Scraper.scrape_classes
+    class_names.map { |class_name| Klass.new(class_name) }
   end
 
   def spells

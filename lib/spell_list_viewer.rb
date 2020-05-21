@@ -1,3 +1,5 @@
+require "io/console"
+
 class SpellListViewer
   include Printer
 
@@ -21,7 +23,7 @@ class SpellListViewer
 
   def print_spell_group(title, spells)
     puts title
-    print_table(spells)
+    # print_table(spells)
     puts spells.map(&:name)
     puts
   end
