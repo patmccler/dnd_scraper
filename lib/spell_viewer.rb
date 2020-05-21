@@ -1,5 +1,5 @@
 class SpellViewer
-  LINE_LENGTH = 40
+  LINE_LENGTH = 80
 
   def initialize(spell)
     @spell = spell
@@ -26,16 +26,45 @@ class SpellViewer
   end
 
   def print_sub_text
-    text = level_text(@spell.level) + @spell.type + cantrip_text(@spell.level)
+    text = level_str(@spell.level) + @spell.type + cantrip_str(@spell.level)
     print_center("- #{text} -", "#")
   end
 
   def print_casting_details
     indent = 3
-    print_indent("Cast Time: #{@spell.cast_time || 'unknown'}", indent)
-    print_indent("Range: #{@spell.range || 'unknown'}", indent)
-    print_indent("Components: #{@spell.components || 'unknown'}", indent)
-    print_indent("Duration: #{@spell.duration || 'unknown'}", indent)
+    print_indent(cast_time_str, indent)
+    print_indent(range_str, indent)
+    print_indent(components_str, indent)
+    print_indent(duration_str, indent)
+  end
+
+  # Helpers for printing
+  def level_str(level)
+    level.positive? ? "#{level.to_s + ordinal(level)} level " : ""
+  end
+
+  def cantrip_str(level)
+    level.zero? ? " Cantrip" : ""
+  end
+
+  def cast_time_str
+    "Cast Time: #{@spell.cast_time || 'unknown'}"
+  end
+
+  def range_str
+    "Range: #{@spell.range || 'unknown'}"
+  end
+
+  def components_str
+    "Components: #{@spell.components || 'unknown'}"
+  end
+
+  def duration_str
+    "Duration: #{concentration_str + @spell.duration}"
+  end
+
+  def concentration_str
+    @spell.concentration? ? "Concentration, " : ""
   end
 
   def print_center(str, border = "", line_length = LINE_LENGTH)
@@ -55,14 +84,6 @@ class SpellViewer
 
   def print_indent(str, indent)
     puts (" " * indent) + str
-  end
-
-  def level_text(level)
-    level.positive? ? "#{level.to_s + ordinal(level)} level " : ""
-  end
-
-  def cantrip_text(level)
-    level.zero? ? " Cantrip" : ""
   end
 
   def ordinal(num)
