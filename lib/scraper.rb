@@ -48,14 +48,10 @@ class Scraper
     spell_doc.css("h2").map do |section|
       section.next_element.css("a").map do |anchor|
         name = anchor.text
-        link = anchor["href"].gsub("../../..", "")
+        link = anchor["href"].gsub("../../../", "")
         Spell.find_or_create(name, section.text, link)
       end
     end.flatten
     # section map, an array of arrays of spells
-  end
-
-  def self.scrape_spell_info(spell)
-
   end
 end

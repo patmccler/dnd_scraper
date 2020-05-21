@@ -2,7 +2,7 @@
 # A class has many spells, and spells can belong to many classes.
 
 class Spell
-  attr_reader :name, :level
+  attr_reader :name, :level, :link
 
   attr_accessor :type, :cast_time, :range, :components,
                 :duration, :description, :ritual, :concentration

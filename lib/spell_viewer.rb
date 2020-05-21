@@ -3,7 +3,7 @@ class SpellViewer
 
   def initialize(spell)
     @spell = spell
-    Scraper.scrape_spell_info(spell) unless info_complete?(spell)
+    SpellScraper.scrape_spell_info(spell) unless info_complete?(spell)
   end
 
   # Checks if spell has detailed info or not
