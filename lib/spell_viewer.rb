@@ -2,6 +2,7 @@ require "io/console"
 
 class SpellViewer
   include Printer
+
   def initialize(spell)
     @line_length = IO.console.winsize[1]
     puts @line_length
