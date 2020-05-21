@@ -31,17 +31,15 @@ class Cli
   end
 
   def handle_input_to_choose_class
-    # Change to exit_or_back if this becomes not top level
-    loop_for_input(exit?, proc { choose_class_prompt }) do |input|
+    loop_until_input(is_exit?, proc { choose_class_prompt }) do |input|
       if (klass = Klass.find_by_name_or_number(input))
         # sets input so exit can bubble up if needed
-        input = prompt_for_choose_spells(klass)
+        prompt_for_choose_spells(klass)
       elsif eq_no_case?(input, "list")
         print_class_list
       else
         puts "Invalid Input. Try again?"
       end
-      input
     end
   end
 
@@ -76,7 +74,7 @@ class Cli
   def handle_input_to_list_spells(klass_name, spells)
     prompt = proc { class_spell_prompt(klass_name, spells.count) }
 
-    loop_for_input(exit_or_back?, prompt) do |input|
+    loop_until_input(is_exit_or_back?, prompt) do |input|
       if Spell.valid_level?(lvl = i_from_s(input)) || eq_no_case?(input, "all")
         print_spells_by_level(spells, lvl)
       elsif (spell = spells.find { |s| eq_no_case?(s.name, input) })
@@ -90,7 +88,7 @@ class Cli
   # Checks input for breaking condition before and after loop
   # optionally calls prompt on each loop if not breaking
   # Nestable
-  def loop_for_input(break_condition, prompt = nil)
+  def loop_until_input(break_condition, prompt = nil)
     prompt&.call
     until break_condition.call((input = user_input))
       input = yield input
@@ -101,11 +99,11 @@ class Cli
     input
   end
 
-  def exit_or_back?
+  def is_exit_or_back?
     proc { |input| eq_no_case?(input, "exit") || eq_no_case?(input, "back") }
   end
 
-  def exit?
+  def is_exit?
     proc { |input| eq_no_case?(input, "exit") }
   end
 
