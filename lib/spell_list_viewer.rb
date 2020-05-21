@@ -23,7 +23,7 @@ class SpellListViewer
   end
 
   def print_spell_group(title:, spells:)
-    print_line_centered(title)
+    print_box(title, "+")
     print_table(spells.map(&:name))
     # puts spells.map(&:name)
     puts

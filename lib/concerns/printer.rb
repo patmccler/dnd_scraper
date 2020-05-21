@@ -18,9 +18,10 @@ module Printer
   end
 
   def print_box(strings, char = "#")
-    print_horizontal_rule("#")
+    strings = [strings] unless strings.is_a? Array
+    print_horizontal_rule(char)
     strings.each { |s| print_line_centered(s, border: char) }
-    print_horizontal_rule("#")
+    print_horizontal_rule(char)
 
   end
 
