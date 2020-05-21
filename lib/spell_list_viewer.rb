@@ -24,7 +24,7 @@ class SpellListViewer
 
   def print_spell_group(title:, spells:)
     print_line_centered(title)
-    print_table(spells.map(&:name), cols: "max")
+    print_table(spells.map(&:name))
     # puts spells.map(&:name)
     puts
   end
