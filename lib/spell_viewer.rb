@@ -32,12 +32,18 @@ class SpellViewer
   end
 
   def print_center(str, border = "", line_length = LINE_LENGTH)
-    if line_length < str.length
-      puts str
-    else
-      pad, r = (line_length - str.length - 2 * border.length).divmod(2)
-      puts border + (" " * pad) + str + (" " * (pad + r)) + border
+    unless line_length < str.length
+      pad, r = padding(line_length, str.length, border.length)
+      str = border + (" " * pad) + str + (" " * (pad + r)) + border
     end
+    puts str
+  end
+
+  # finds the empty space between a string that needs printing
+  # with any "border" string
+  # for a given line length
+  def padding(line_length, str_length, border_length)
+    (line_length - str_length - 2 * border_length).divmod(2)
   end
 
   def print_indent(str, indent)
