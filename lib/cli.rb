@@ -122,10 +122,7 @@ class Cli
   end
 
   def print_spells_by_level(spells, level = nil)
-    #TODO: make pretty - table?
-    spells = spells.select { |spell| spell.level == level } if level
-    puts "Level #{level} spells:" if level
-    puts spells.map(&:name)
+    SpellListViewer.new(spells).print_spells_by_level(level)
     puts
   end
 

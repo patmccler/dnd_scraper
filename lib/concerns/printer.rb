@@ -47,6 +47,10 @@ module Printer
     curr_line.size + word.size + 2 * padding + border.size
   end
 
+  def print_table(item_arr, columns: 1, line_length: @line_lengh)
+
+  end
+
   def ordinal(num)
     case num % 10
     when 1 then "st"
