@@ -42,7 +42,7 @@ class SpellViewer
     print_line_centered(range_str, border: "|")
     print_line_centered(components_str, border: "|")
     print_line_centered(duration_str, border: "|")
-    print_horizontal_rule()
+    print_horizontal_rule
   end
 
   def print_description
