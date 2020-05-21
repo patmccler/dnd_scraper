@@ -9,7 +9,6 @@ class SpellScraper
     update_type_info(spell, tagline.text)
     update_casting_info(spell, cast_info)
     update_description(spell, spell_doc)
-    binding.pry
   end
 
   def self.update_type_info(spell, tagline)

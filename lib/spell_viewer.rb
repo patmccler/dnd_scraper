@@ -17,27 +17,33 @@ class SpellViewer
   def print_spell
     print_header
     print_casting_details
-    # print_description
+    print_description
+    # return name to keep expect string value on call
+    @spell.name
   end
 
   def print_header
     puts "#" * @line_length
-    print_center(@spell.name, "#")
+    print_line_centered(@spell.name, bord: "#")
     print_sub_text
     puts "#" * @line_length
   end
 
   def print_sub_text
     text = level_str(@spell.level) + @spell.type + cantrip_str(@spell.level)
-    print_center("- #{text} -", "#")
+    print_line_centered("- #{text} -", bord: "#")
   end
 
   def print_casting_details
-    print_center(cast_time_str, "|")
-    print_center(range_str, "|")
-    print_center(components_str, "|")
-    print_center(duration_str, "|")
+    print_line_centered(cast_time_str, bord: "|")
+    print_line_centered(range_str, bord: "|")
+    print_line_centered(components_str, bord: "|")
+    print_line_centered(duration_str, bord: "|")
     print_horizontal_rule()
+  end
+
+  def print_description
+    print_multiline_center(@spell.description, pad: @line_length / 8)
   end
 
   # Helpers for printing
@@ -70,7 +76,7 @@ class SpellViewer
   end
 
   def print_center(str, border = "", line_length = @line_length)
-    unless line_length < str.length
+    unless line_length <= str.length
       pad, r = padding(line_length, str.length, border.length)
       str = border + (" " * pad) + str + (" " * (pad + r)) + border
     end
@@ -90,6 +96,31 @@ class SpellViewer
 
   def print_horizontal_rule(line_length = @line_length)
     puts "—" * line_length
+  end
+
+  def print_multiline_center(str, pad: 0, line_length: @line_length)
+    # Each paragraph
+    str.split("\n").each do |sent|
+      # Each sentance
+      print_line_centered(sent, pad: pad, line_length: line_length)
+    end
+  end
+
+  def print_line_centered(str, bord: "", pad: 0, line_length: @line_length)
+    last = str.split(" ").inject("") do |curr_line, word|
+      # binding.pry
+      if curr_line_size(curr_line, word, pad, bord) > line_length
+        print_center(curr_line, bord)
+        ""
+      else
+        curr_line.empty? ? word : "#{curr_line} #{word}"
+      end
+    end
+    print_center(last, bord)
+  end
+
+  def curr_line_size(curr_line, word, padding, border)
+    curr_line.size + word.size + 2 * padding + border.size
   end
 
   def ordinal(num)
