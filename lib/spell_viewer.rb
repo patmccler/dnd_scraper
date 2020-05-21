@@ -33,11 +33,11 @@ class SpellViewer
   end
 
   def print_casting_details
-    indent = 3
-    print_indent(cast_time_str, indent)
-    print_indent(range_str, indent)
-    print_indent(components_str, indent)
-    print_indent(duration_str, indent)
+    print_center(cast_time_str, "|")
+    print_center(range_str, "|")
+    print_center(components_str, "|")
+    print_center(duration_str, "|")
+    print_horizontal_rule()
   end
 
   # Helpers for printing
@@ -86,6 +86,10 @@ class SpellViewer
 
   def print_indent(str, indent)
     puts (" " * indent) + str
+  end
+
+  def print_horizontal_rule(line_length = @line_length)
+    puts "—" * line_length
   end
 
   def ordinal(num)
