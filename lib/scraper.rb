@@ -54,4 +54,8 @@ class Scraper
     end.flatten
     # section map, an array of arrays of spells
   end
+
+  def self.scrape_spell_info(spell)
+
+  end
 end

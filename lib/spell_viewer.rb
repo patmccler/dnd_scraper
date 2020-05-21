@@ -3,6 +3,13 @@ class SpellViewer
 
   def initialize(spell)
     @spell = spell
+    Scraper.scrape_spell_info(spell) unless info_complete?(spell)
+  end
+
+  # Checks if spell has detailed info or not
+  def info_complete?(spell)
+    spell.cast_time && spell.range && spell.components &&
+      spell.duration && spell.ritual && spell.concentration
   end
 
   def print_spell

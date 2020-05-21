@@ -32,4 +32,12 @@ class Spell
   def self.valid_level?(level)
     LEVELS.cover?(level)
   end
+
+  def ritual?
+    @ritual
+  end
+
+  def concentration?
+    @concentration
+  end
 end
