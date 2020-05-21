@@ -8,6 +8,8 @@ class SpellScraper
 
     update_type_info(spell, tagline.text)
     update_casting_info(spell, cast_info)
+    update_description(spell, spell_doc)
+    binding.pry
   end
 
   def self.update_type_info(spell, tagline)
@@ -29,6 +31,13 @@ class SpellScraper
         concentration: find_concentration(cast_info_p),
       }
     )
+  end
+
+  def self.update_description(spell, doc)
+    # Gets all the p elements after the casting description
+    desc = doc.css(".col-md-9 p:nth-of-type(n+3)").map(&:text)
+    desc = desc.join("\n\n")
+    spell.description = desc
   end
 
   # Assumes the string is in one of the following formats:
