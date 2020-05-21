@@ -1,4 +1,6 @@
 module Printer
+  TABSIZE = 8
+
   def print_center(str, border = "", line_length = @line_length)
     unless line_length <= str.length
       pad, r = padding(line_length, str.length, border.length)
@@ -30,26 +32,54 @@ module Printer
     end
   end
 
-  def print_line_centered(str, bord: "", pad: 0, line_length: @line_length)
-    last = str.split(" ").inject("") do |curr_line, word|
+  def print_line_centered(str, border: "", pad: 0, line_length: @line_length)
+    last = str.split(" ").inject("") do |current_line, word|
       # binding.pry
-      if curr_line_size(curr_line, word, pad, bord) > line_length
-        print_center(curr_line, bord)
+      if curr_line_size(current_line, word, pad, border) > line_length
+        print_center(current_line, border)
         ""
       else
-        curr_line.empty? ? word : "#{curr_line} #{word}"
+        current_line.empty? ? word : "#{current_line} #{word}"
       end
     end
-    print_center(last, bord)
+    print_center(last, border)
   end
 
   def curr_line_size(curr_line, word, padding, border)
     curr_line.size + word.size + 2 * padding + border.size
   end
 
-  def print_table(item_arr, columns: 1, line_length: @line_lengh)
+  # def print_table(str_arr, cols: 1, line_length: @line_length)
+  #   col_width = (line_length / cols) / TABSIZE
+  #   max = str_arr.max_by(&:size)
+  #   max_tabs = max / TABSIZE + 1
 
-  end
+  #   if max > col_width
+  #     if cols <= 1
+  #       # cant have 0 columns, just center the lines
+  #       str_arr.each { |str| print_line_centered(str)}
+  #     else
+  #       # fall back to less columns if it doesnt fit
+  #       print_table(str_arr, cols: cols - 1, line_length)
+  #     end
+  #   else
+  #     str_arr.each_with_index do |str, i|
+  #       str = pad_with_space str
+  #       if i % col == 0
+  #         str += "\n"
+  #       end
+  #       print str
+  #     end
+  #   end
+  # end
+
+  # def pad_with_space(str, desired_length)
+  #   diff = desired_length - str.size
+  #   total_tabs, spaces = desired_length.divmod(TABSIZE)
+
+
+
+  # end
 
   def ordinal(num)
     case num % 10
