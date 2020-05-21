@@ -17,12 +17,19 @@ module Printer
     (@line_length - str_length - 2 * border_length).divmod(2)
   end
 
+  def print_box(strings, char = "#")
+    print_horizontal_rule("#")
+    strings.each { |s| print_line_centered(s, border: char) }
+    print_horizontal_rule("#")
+
+  end
+
   def print_indent(str, indent)
     puts (" " * indent) + str
   end
 
-  def print_horizontal_rule
-    puts "—" * @line_length
+  def print_horizontal_rule(char = "—")
+    puts char[0] * @line_length
   end
 
   def print_multiline_center(str, pad: 0)

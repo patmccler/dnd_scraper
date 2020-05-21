@@ -25,16 +25,14 @@ class SpellViewer
   end
 
   def print_header
-    puts "#" * @line_length
-    print_line_centered(@spell.name, border: "#")
-    print_sub_text
-    puts "#" * @line_length
+    subtext = level_str + @spell.type + cantrip_str + ritual_str
+    print_box([@spell.name, "- #{subtext} -"])
   end
 
-  def print_sub_text
+  def sub_text_str
     text = level_str + @spell.type + cantrip_str +
            ritual_str
-    print_line_centered("- #{text} -", border: "#")
+    "- #{text} -"
   end
 
   def print_casting_details
