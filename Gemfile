@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem 'httparty'
+gem "httparty"
 gem "nokogiri"
 gem "pry"
 gem "require_all"
