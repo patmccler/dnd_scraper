@@ -1,7 +1,9 @@
-class SpellViewer
-  LINE_LENGTH = 80
+require "io/console"
 
+class SpellViewer
   def initialize(spell)
+    @line_length = IO.console.winsize[1]
+    puts @line_length
     @spell = spell
     SpellScraper.scrape_spell_info(spell) unless info_complete?(spell)
   end
@@ -19,10 +21,10 @@ class SpellViewer
   end
 
   def print_header
-    puts "#" * LINE_LENGTH
+    puts "#" * @line_length
     print_center(@spell.name, "#")
     print_sub_text
-    puts "#" * LINE_LENGTH
+    puts "#" * @line_length
   end
 
   def print_sub_text
@@ -67,7 +69,7 @@ class SpellViewer
     @spell.concentration? ? "Concentration, " : ""
   end
 
-  def print_center(str, border = "", line_length = LINE_LENGTH)
+  def print_center(str, border = "", line_length = @line_length)
     unless line_length < str.length
       pad, r = padding(line_length, str.length, border.length)
       str = border + (" " * pad) + str + (" " * (pad + r)) + border
