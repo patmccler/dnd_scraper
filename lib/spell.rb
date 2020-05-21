@@ -22,7 +22,8 @@ class Spell
   end
 
   def level=(input)
-    @level = input.scan(/\d+/)[0].to_i
+    @level = input.scan(/\d+/)[0].to_i if input.is_a?(String)
+    @level = input if input.is_a?(Integer)
   end
 
   def self.find_or_create(name, level, link)
