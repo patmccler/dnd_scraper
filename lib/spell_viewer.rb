@@ -1,11 +1,8 @@
 require "io/console"
 
 class SpellViewer
-  include Printer
-
   def initialize(spell)
-    @line_length = IO.console.winsize[1]
-    puts @line_length
+    @printer = Printer.new
     @spell = spell
     SpellScraper.scrape_spell_info(spell) unless info_complete?(spell)
   end
@@ -26,7 +23,7 @@ class SpellViewer
 
   def print_header
     subtext = level_str + @spell.type + cantrip_str + ritual_str
-    print_box([@spell.name, "- #{subtext} -"])
+    @printer.print_box([@spell.name, "- #{subtext} -"])
   end
 
   def sub_text_str
@@ -36,15 +33,16 @@ class SpellViewer
   end
 
   def print_casting_details
-    print_line_centered(cast_time_str, border: "|")
-    print_line_centered(range_str, border: "|")
-    print_line_centered(components_str, border: "|")
-    print_line_centered(duration_str, border: "|")
-    print_horizontal_rule
+    @printer.print_line_centered(cast_time_str, border: "|")
+    @printer.print_line_centered(range_str, border: "|")
+    @printer.print_line_centered(components_str, border: "|")
+    @printer.print_line_centered(duration_str, border: "|")
+    @printer.print_horizontal_rule
   end
 
   def print_description
-    print_multiline_center(@spell.description, pad: @line_length / 8)
+    line_length = @printer.line_length
+    @printer.print_multiline_center(@spell.description, pad: line_length / 8)
   end
 
   # Helpers for printing
@@ -79,5 +77,14 @@ class SpellViewer
 
   def concentration_str
     @spell.concentration? ? "Concentration, " : ""
+  end
+
+  def ordinal(num)
+    case num % 10
+    when 1 then "st"
+    when 2 then "nd"
+    when 3 then "rd"
+    else "th"
+    end
   end
 end

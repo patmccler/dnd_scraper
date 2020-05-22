@@ -24,8 +24,8 @@ class CliMessenger
     puts "Invalid Input. Try again?\n\n"
   end
 
-  def no_spells_for_class_message
-    print "Unfortunately, it doesn't look like #{klass.name}s"
+  def no_spells_for_class_message(name)
+    print "Unfortunately, it doesn't look like #{name}s"
     print " can learn any spells!\n\n"
   end
 

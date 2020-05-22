@@ -1,46 +1,29 @@
-module Printer
+class Printer
+  attr_reader :line_length
   TABSIZE = 8
-  # TODO: organize public vs private
 
-  def print_center(str, border = "")
-    unless @line_length <= str.length
-      pad, r = padding(str.length, border.length)
-      str = border + (" " * pad) + str + (" " * (pad + r)) + border
-    end
-    puts str
+  def initialize
+    @line_length = IO.console.winsize[1]
   end
 
-  # finds the empty space between a string that needs printing
-  # with any "border" string
-  # for a given line length
-  def padding(str_length, border_length)
-    (@line_length - str_length - 2 * border_length).divmod(2)
-  end
-
+  # Takes a string or strings
+  # Prints a full width box of 'chars' around those strings centered
+  # max width of console
   def print_box(strings, char = "#")
     strings = [strings] unless strings.is_a? Array
     print_horizontal_rule(char)
     strings.each { |s| print_line_centered(s, border: char) }
     print_horizontal_rule(char)
-
   end
 
-  def print_indent(str, indent)
-    puts (" " * indent) + str
-  end
-
+  # prints enough of chars to go across the screen
   def print_horizontal_rule(char = "—")
     puts char[0] * @line_length
   end
 
-  def print_multiline_center(str, pad: 0)
-    # Each paragraph
-    str.split("\n").each do |sent|
-      # Each sentance
-      print_line_centered(sent, pad: pad)
-    end
-  end
-
+  # takes a single string
+  # prints that string, centered in the console,
+  # with 'pad' spaces around it and 'border' at the edge of the console
   def print_line_centered(str, border: "", pad: 0)
     last = str.split(" ").inject("") do |current_line, word|
       if curr_line_size(current_line, word, pad, border) > @line_length
@@ -55,8 +38,14 @@ module Printer
     print_center(last, border)
   end
 
-  def curr_line_size(curr_line, word, padding, border)
-    curr_line.size + word.size + 2 * padding + border.size
+  # Takes a single long string
+  # splits it on new lines, and prints each of those 'sentances' centered
+  def print_multiline_center(str, pad: 0)
+    # Each paragraph
+    str.split("\n").each do |sentance|
+      # Each sentance
+      print_line_centered(sentance, pad: pad)
+    end
   end
 
   # prints a table with the given number of columns 'col'
@@ -76,6 +65,26 @@ module Printer
     else
       print_table_print(str_arr, col_tabs, cols)
     end
+  end
+
+private
+
+  def print_center(str, border = "")
+    unless @line_length <= str.length
+      pad, extra_space = padding(str.length, border.length)
+      str = border + (" " * pad) + str + (" " * (pad + extra_space)) + border
+    end
+    puts str
+  end
+
+  # finds the empty space between a string that needs printing
+  # with any "border" string length
+  def padding(str_length, border_length)
+    (@line_length - str_length - 2 * border_length).divmod(2)
+  end
+
+  def curr_line_size(curr_line, word, padding, border)
+    curr_line.size + word.size + 2 * padding + border.size
   end
 
   def max_columns(word_tabs)
@@ -102,14 +111,5 @@ module Printer
   def pad_with_space(str, desired_length)
     str_tabs = str.size / TABSIZE
     str + "\t" * (desired_length - str_tabs)
-  end
-
-  def ordinal(num)
-    case num % 10
-    when 1 then "st"
-    when 2 then "nd"
-    when 3 then "rd"
-    else "th"
-    end
   end
 end

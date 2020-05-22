@@ -5,7 +5,6 @@ class Cli
   def call
     @messenger = CliMessenger.new
     @messenger.welcome_message
-    # TODO: choose by class, level, type?
     prompt_for_class_choice
     @messenger.farewell_message
   end
@@ -42,7 +41,7 @@ class Cli
 
     if spells.empty?
       # don't go into next loop, if no spells exit
-      @messenger.no_spells_for_class_message
+      @messenger.no_spells_for_class_message(klass.name)
     else
       handle_input_to_list_spells(klass.name, spells)
     end

@@ -1,10 +1,9 @@
 require "io/console"
 
 class SpellListViewer
-  include Printer
 
   def initialize(spell_list)
-    @line_length = IO.console.winsize[1]
+    @printer = Printer.new
     @spells = spell_list
   end
 
@@ -24,9 +23,8 @@ class SpellListViewer
   end
 
   def print_spell_group(title:, spells:)
-    print_box(title, "+")
-    print_table(spells.map(&:name))
-    # puts spells.map(&:name)
+    @printer.print_box(title, "+")
+    @printer.print_table(spells.map(&:name))
     puts
   end
 end
