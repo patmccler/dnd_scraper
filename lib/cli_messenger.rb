@@ -22,6 +22,16 @@ class CliMessenger
     end
   end
 
+  def choose_school_message
+    # TODO:
+    puts "Tell about schools"
+  end
+
+  def choose_school_prompt
+    # TODO:
+    proc { puts "Pick a school from list" }
+  end
+
   def class_spell_prompt(name, spell_count)
     proc do
       puts "#{name}s have #{spell_count} spells."

@@ -43,6 +43,15 @@ class Cli
     end
   end
 
+  def prompt_for_choose_school
+    @messenger.choose_school_message
+
+    prompt = @messenger.choose_school_prompt
+    loop_until_input_is(exit?, back?, prompt) do |input|
+      # TODO: School choices here
+    end
+  end
+
   def prompt_for_choose_class
     @messenger.print_class_list
     handle_input_to_choose_class
