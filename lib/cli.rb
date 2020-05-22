@@ -16,13 +16,11 @@ class Cli
   end
 
   def welcome
-    puts "Hello, welcome to this DND Spell lookup app!"
-    puts "Spells have both a level and a school,"
-    puts "and can be learned by one or more classes.\n\n"
+    Climessenger.welcome_message
   end
 
   def farewell
-    puts "Thanks for taking a look!"
+    Climessenger.farewell_message
   end
 
   def prompt_for_class_choice
@@ -31,7 +29,7 @@ class Cli
   end
 
   def handle_input_to_choose_class
-    loop_until_input(is_exit?, proc { choose_class_prompt }) do |input|
+    loop_until_input(exit?, proc { choose_class_prompt }) do |input|
       if (klass = Klass.find_by_name_or_number(input))
         # sets input so exit can bubble up if needed
         prompt_for_choose_spells(klass)
@@ -44,9 +42,7 @@ class Cli
   end
 
   def choose_class_prompt
-    puts "Enter a class number or name from the list"
-    puts "to see which spells that class has available."
-    puts "Enter 'list' to see the list again.\n\n"
+    Climessenger.choose_class_message
   end
 
   def print_class_list
@@ -64,23 +60,22 @@ class Cli
     spells = klass.spells
 
     if spells.empty?
-      print "Unfortunately, it doesn't look like #{klass.name}s"
-      print " can learn any spells!\n\n"
+      Climessenger.no_spells_for_class_message
     else
       handle_input_to_list_spells(klass.name, spells)
     end
   end
 
   def handle_input_to_list_spells(klass_name, spells)
-    prompt = proc { class_spell_prompt(klass_name, spells.count) }
+    prompt = proc { Climessenger.class_spell_prompt(klass_name, spells.count) }
 
-    loop_until_input(is_exit_or_back?, prompt) do |input|
+    loop_until_input(exit_or_back?, prompt) do |input|
       if Spell.valid_level?(lvl = i_from_s(input)) || eq_no_case?(input, "all")
         print_spells_by_level(spells, lvl)
       elsif (spell = spells.find { |s| eq_no_case?(s.name, input) })
         print_spell_info(spell)
       else
-        puts "Invalid Input. Try again?"
+        Climessenger.invalid_input_message
       end
     end
   end
@@ -99,24 +94,17 @@ class Cli
     input
   end
 
-  def is_exit_or_back?
+  def exit_or_back?
     proc { |input| eq_no_case?(input, "exit") || eq_no_case?(input, "back") }
   end
 
-  def is_exit?
+  def exit?
     proc { |input| eq_no_case?(input, "exit") }
   end
 
   def print_spell_info(spell)
     # TODO: get specifics of spell here
     SpellViewer.new(spell).print_spell
-  end
-
-  def class_spell_prompt(name, spell_count)
-    puts "#{name}s have #{spell_count} spells."
-    puts "Enter a level 0 - 9 to see spells of that level for #{name}."
-    puts "Enter 'all' to see them all at once."
-    puts "Enter a spell name to see that spell's info.\n\n"
   end
 
   def print_spells_by_level(spells, level = nil)
