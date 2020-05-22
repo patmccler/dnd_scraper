@@ -24,12 +24,12 @@ class CliMessenger
   end
 
   def choose_school_message
-    # TODO:
+    # TODO: implement
     puts "Tell about schools"
   end
 
   def choose_school_prompt
-    # TODO:
+    # TODO: implement
     proc { puts "Pick a school from list" }
   end
 

@@ -125,7 +125,7 @@ class Cli
   end
 
   def back?
-    proc { |input| eq_no_case?(input, "back")}
+    proc { |input| eq_no_case?(input, "back") }
   end
 
   def exit?
@@ -140,6 +140,7 @@ class Cli
     SpellListViewer.new(spells).print_spells_by_level(level)
   end
 
+  # returns nil if no number, not 0 like .to_i
   def i_from_s(input)
     int = input.scan(/\-?\d+/)[0]
     int.to_i if int.is_a?(String)
