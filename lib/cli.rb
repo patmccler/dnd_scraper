@@ -5,7 +5,6 @@ class Cli
   def call
     @messenger = CliMessenger.new
     @messenger.welcome_message
-    # prompt_for_choose_class
     prompt_for_lookup_type
     @messenger.farewell_message
   end
@@ -37,7 +36,7 @@ class Cli
     prompt = @messenger.choose_level_loop_prompt
     loop_until_input_is(exit?, back?, prompt) do |input|
       if Spell.valid_level?(i_from_s(input)) || match_all?(input)
-        print_spells_by_level(Spell.all, i_from_s(input))
+        print_spells_by_level(Spell.all, Spell.level_from_str(input))
       elsif (spell = Spell.find_by_name_from_list(Spell.all, input))
         print_spell_info(spell)
       else
