@@ -1,16 +1,17 @@
 # This class is responsible for communication with the user.
-# It uses CliMessenger class to actually print the messages.
+# It uses @messenger class to actually print the messages.
 # SpellViewer and Spell List viewer to handle printing those things.
 class Cli
   def call
-    CliMessenger.welcome_message
+    @messenger = CliMessenger.new
+    @messenger.welcome_message
     # TODO: choose by class, level, type?
     prompt_for_class_choice
-    CliMessenger.farewell_message
+    @messenger.farewell_message
   end
 
   def prompt_for_class_choice
-    CliMessenger.print_class_list
+    @messenger.print_class_list
     handle_input_to_choose_class
   end
 
@@ -21,15 +22,15 @@ class Cli
       if (klass = Klass.find_by_name_or_number(input))
         prompt_for_choose_spells(klass)
       elsif eq_no_case?(input, "list")
-        CliMessenger.print_class_list
+        @messenger.print_class_list
       else
-        CliMessenger.invalid_input_message
+        @messenger.invalid_input_message
       end
     end
   end
 
   def choose_class_prompt
-    CliMessenger.choose_class_message
+    @messenger.choose_class_message
   end
 
   def eq_no_case?(str1, str2)
@@ -41,7 +42,7 @@ class Cli
 
     if spells.empty?
       # don't go into next loop, if no spells exit
-      CliMessenger.no_spells_for_class_message
+      @messenger.no_spells_for_class_message
     else
       handle_input_to_list_spells(klass.name, spells)
     end
@@ -50,7 +51,7 @@ class Cli
   # Level of the CLI where you can see the spells that a particular class knows
   # Alternately, you can enter a name of a spell to see that spell's info
   def handle_input_to_list_spells(klass_name, spells)
-    prompt = CliMessenger.class_spell_prompt_proc(klass_name, spells.count)
+    prompt = @messenger.class_spell_prompt_proc(klass_name, spells.count)
 
     loop_until_input_is(exit_or_back?, prompt) do |input|
       if Spell.valid_level?(lvl = i_from_s(input)) || eq_no_case?(input, "all")
@@ -58,7 +59,7 @@ class Cli
       elsif (spell = spells.find { |s| eq_no_case?(s.name, input) })
         print_spell_info(spell)
       else
-        CliMessenger.invalid_input_message
+        @messenger.invalid_input_message
       end
     end
   end
