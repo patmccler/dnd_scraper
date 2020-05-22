@@ -48,10 +48,10 @@ class Cli
   def prompt_for_choose_school
     if School.all.empty?
       # don't go into next loop, if no schools exit
-      @messenger.no_schools_for_spells_message
+      @messenger.no_schools_message
     else
       @messenger.choose_school_message
-      @messenger.print_school_list
+      @messenger.print_memoable_list(School)
       handle_input_to_list_schools
     end
   end
@@ -73,7 +73,7 @@ class Cli
 
   # Gets input and see if user has picked a calss
   def prompt_for_choose_class
-    @messenger.print_class_list
+    @messenger.print_memoable_list(Klass)
     loop_until_input_is(exit?, back?, @messenger.choose_class_prompt) do |input|
       if (klass = Klass.find_by_name_or_number(input))
         prompt_for_choose_spells(klass)
@@ -118,10 +118,6 @@ class Cli
 
   def match_all?(str)
     eq_no_case?(str, "all")
-  end
-
-  def find_spell(spells, name)
-    spells.find { |s| eq_no_case?(s.name, name) }
   end
 
   # Checks input for breaking condition before and after loop

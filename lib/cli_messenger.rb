@@ -29,13 +29,6 @@ class CliMessenger
     puts
   end
 
-  def print_school_list
-    School.all.each_with_index do |school, i|
-      puts "#{i + 1}. #{school.name}"
-    end
-    puts
-  end
-
   def choose_school_prompt
     proc do
       puts "Pick a school from list, or type 'list' to see the list again"
@@ -85,8 +78,8 @@ class CliMessenger
     print " can learn any spells!\n\n"
   end
 
-  def print_class_list
-    Klass.all.each_with_index do |klass, i|
+  def print_memoable_list(klass)
+    klass.all.each_with_index do |klass, i|
       puts "#{i + 1}. #{klass.name}"
     end
     puts
