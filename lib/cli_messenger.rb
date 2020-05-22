@@ -16,12 +16,23 @@ class CliMessenger
     proc { class_spell_prompt(name, spell_count) }
   end
 
+  def lookup_by_loop_prompt
+    proc { puts "Type 'class', 'school', or 'level'" }
+  end
+
   def farewell_message
     puts "Thanks for taking a look!"
   end
 
   def invalid_input_message
     puts "Invalid Input. Try again?\n\n"
+  end
+
+  def lookup_type_message
+    puts "Enter 'class' to look up spells by class"
+    puts "\tThis is how you learn about new spells"
+    puts "Enter 'school' to see spells you've learned about, by school"
+    puts "Enter 'level' to see the spells you've learned about, by level"
   end
 
   def no_spells_for_class_message(name)
@@ -37,8 +48,10 @@ class CliMessenger
   end
 
   def welcome_message
-    puts "Hello, welcome to this DND Spell lookup app!"
+    puts "Hello, and welcome to this DND Spell Information app!"
     puts "Spells have both a level and a school,"
     puts "and can be learned by one or more classes.\n\n"
+    puts "Follow the prompts, type 'back to return to the previous screen"
+    puts "Or type 'exit' to quit at any time."
   end
 end

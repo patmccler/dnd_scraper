@@ -5,11 +5,42 @@ class Cli
   def call
     @messenger = CliMessenger.new
     @messenger.welcome_message
-    prompt_for_class_choice
+    prompt_for_choose_class
     @messenger.farewell_message
   end
 
-  def prompt_for_class_choice
+  def prompt_for_lookup_type
+    @messenger.lookup_type_message
+    handle_input_to_choose_lookup_type
+  end
+
+  def handle_input_to_choose_lookup_type
+    prompt = lookup_by_loop_prompt
+    loop_until_input_is(exit?, prompt) do |input|
+      input = input.downcase
+      if input == "class" then prompt_for_choose_class
+      elsif input == "level" then prompt_for_choose_level
+      elsif input == "school" then prompt_for_choose_school
+      else
+        @messenger.invalid_input_message
+      end
+    end
+  end
+
+  def prompt_for_choose_level
+    prompt = choose_level_loop_prompt
+    loop_until_input_is(exit?, prompt) do |input|
+      input = input.downcase
+      if input == "class" then prompt_for_choose_class
+      elsif input == "level" then prompt_for_choose_level
+      elsif input == "school" then prompt_for_choose_school
+      else
+        @messenger.invalid_input_message
+      end
+    end
+  end
+
+  def prompt_for_choose_class
     @messenger.print_class_list
     handle_input_to_choose_class
   end
