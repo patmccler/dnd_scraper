@@ -1,5 +1,6 @@
 class Printer
   attr_reader :line_length
+
   TABSIZE = 8
 
   def initialize
