@@ -1,3 +1,4 @@
+require "IO/console"
 class Printer
   attr_reader :line_length
 
