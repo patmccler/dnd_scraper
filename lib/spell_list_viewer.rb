@@ -20,6 +20,7 @@ class SpellListViewer
       print_spell_group(title: "Level #{spell_level} Spells: #{spells.count}",
                         spells: spells)
     end
+    puts
   end
 
   def print_spell_group(title:, spells:)
