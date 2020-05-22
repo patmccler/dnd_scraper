@@ -32,26 +32,12 @@ class Cli
     handle_input_to_list_spells(Spell.all)
   end
 
-  # def handle_input_for_choose_level
-  #   prompt = @messenger.spell_list_prompt(Spell.count)
-  #   loop_until_input_is(exit?, back?, prompt) do |input|
-  #     if (level = Spell.level_from_str(input)) || match_all?(input)
-  #       print_spells_by_level(Spell.all, level)
-  #     elsif (spell = Spell.find_by_name_from_list(Spell.all, input))
-  #       print_spell_info(spell)
-  #     else
-  #       @messenger.invalid_input_message
-  #     end
-  #   end
-  # end
-
   def prompt_for_choose_school
     if School.all.empty?
       # don't go into next loop, if no schools exit
       @messenger.no_schools_message
     else
       @messenger.choose_school_message
-      @messenger.print_memoable_list(School)
       handle_input_to_list_schools
     end
   end
@@ -90,13 +76,11 @@ class Cli
   end
 
   def prompt_for_choose_spells(klass)
-    spells = klass.spells
-
-    if spells.empty?
+    if klass.spell_less?
       # don't go into next loop, if no spells exit
       @messenger.no_spells_for_class_message(klass.name)
     else
-      handle_input_to_list_spells(spells, name: klass.name)
+      handle_input_to_list_spells(klass.spells, name: klass.name)
     end
   end
 

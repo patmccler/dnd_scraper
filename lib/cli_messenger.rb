@@ -27,6 +27,7 @@ class CliMessenger
     puts "Each spell has a school."
     puts "Choose from the list to see spells that belong to it."
     puts
+    print_memoable_list(School)
   end
 
   def choose_school_prompt

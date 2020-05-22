@@ -29,4 +29,8 @@ class Klass
 
     klass_spells.map(&:spell)
   end
+
+  def spell_less?
+    spells.count.zero?
+  end
 end
