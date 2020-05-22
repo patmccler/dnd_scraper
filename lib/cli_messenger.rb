@@ -36,9 +36,9 @@ class CliMessenger
     end
   end
 
-  def spell_list_prompt(name, spell_count)
+  def spell_list_prompt(spell_count, name: nil)
     proc do
-      puts "There are #{spell_count} #{name} spells."
+      puts "There are #{spell_count} #{name ? name + ' ' : ''}spells."
       puts "Enter a level 0 - 9 to see spells of that level."
       puts "Enter 'all' to see them all at once."
       puts "Enter a spell name to see that spell's info."
