@@ -15,7 +15,7 @@ class SpellScraper
     spell.update_type_info(
       {
         ritual: tagline.include?("ritual"),
-        type: find_spell_type(tagline),
+        school: find_spell_school(tagline),
       }
     )
   end
@@ -40,11 +40,11 @@ class SpellScraper
   end
 
   # Assumes the string is in one of the following formats:
-  # <#>-Level <TYPE> (Ritual)
-  # <#>-Level <TYPE>
-  # <TYPE> Cantrip
+  # <#>-Level <SCHOOL> (Ritual)
+  # <#>-Level <SCHOOL>
+  # <SCHOOL> Cantrip
   # Pattern finds the first word without numbers in it
-  def self.find_spell_type(str)
+  def self.find_spell_school(str)
     str.scan(/(?:^|\s)(\w+)(?=$|\s)/)[0][0].capitalize
   end
 

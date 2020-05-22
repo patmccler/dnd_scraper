@@ -46,10 +46,20 @@ class Cli
     end
   end
 
-  # Gets input and see if user has picked a spell class
   def prompt_for_choose_school
-    @messenger.choose_school_message
+    schools = Spell.schools
 
+    if schools.empty?
+      # don't go into next loop, if no schools exit
+      @messenger.no_schools_for_spells_message
+    else
+      @messenger.choose_school_message
+      handle_input_to_list_spells(schools)
+    end
+  end
+
+  # Gets input and see if user has picked a spell class
+  def handle_input_to_list_schools(schools)
     prompt = @messenger.choose_school_prompt
     loop_until_input_is(exit?, back?, prompt) do |input|
       # TODO: School choices here

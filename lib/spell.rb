@@ -4,7 +4,7 @@
 class Spell
   attr_reader :name, :level, :link
 
-  attr_accessor :type, :cast_time, :range, :components,
+  attr_accessor :school, :cast_time, :range, :components,
                 :duration, :description, :ritual, :concentration
 
   extend Memoable::ClassMethods
@@ -12,12 +12,25 @@ class Spell
   include Memoable::InstanceMethods
 
   LEVELS = (0..9).freeze
+  class << self
+    def find_or_create(name, level, link)
+      find_by_name(name) || new(name, level, link)
+    end
+
+    def valid_level?(level)
+      level.to_i unless level.is_a? Integer
+      LEVELS.cover?(level)
+    end
+
+    def schools
+      all.map(&:school).uniq
+    end
+  end
 
   def initialize(name, level, link)
     @name = name
     self.level = level
     @link = link
-    @type = "TEMP TYPE"
     save
   end
 
@@ -35,18 +48,9 @@ class Spell
     @concentration = concentration unless concentration.nil?
   end
 
-  def update_type_info(ritual: nil, type: nil)
+  def update_type_info(ritual: nil, school: nil)
     @ritual = ritual unless ritual.nil?
-    @type = type if type
-  end
-
-  def self.find_or_create(name, level, link)
-    find_by_name(name) || new(name, level, link)
-  end
-
-  def self.valid_level?(level)
-    level.to_i unless level.is_a? Integer
-    LEVELS.cover?(level)
+    @school = school if school
   end
 
   def ritual?

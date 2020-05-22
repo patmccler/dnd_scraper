@@ -19,12 +19,12 @@ class SpellViewer
   end
 
   def print_header
-    subtext = level_str + @spell.type + cantrip_str + ritual_str
+    subtext = level_str + @spell.school + cantrip_str + ritual_str
     @printer.print_box([@spell.name, "- #{subtext} -"])
   end
 
   def sub_text_str
-    text = level_str + @spell.type + cantrip_str +
+    text = level_str + @spell.school + cantrip_str +
            ritual_str
     "- #{text} -"
   end

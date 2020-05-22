@@ -25,7 +25,7 @@ class CliMessenger
 
   def choose_school_message
     # TODO: implement
-    puts "Tell about schools"
+    puts Spell.schools
   end
 
   def choose_school_prompt
@@ -63,6 +63,11 @@ class CliMessenger
     puts "\tThis is how you learn about new spells"
     puts "Enter 'school' to see spells you've learned about, by school"
     puts "Enter 'level' to see the spells you've learned about, by level"
+  end
+
+  def no_schools_for_spells_message
+    puts "No spells have a type yet - Look into specific spells to learn"\
+    " about their types."
   end
 
   def no_spells_for_class_message(name)
