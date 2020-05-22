@@ -25,6 +25,18 @@ class Spell
     def schools
       all.map(&:school).uniq
     end
+
+    def find_school(school)
+      schools.find { |s| s.casecmp(school).zero? }
+    end
+
+    def find_school_by_number(num)
+      schools[num.to_i - 1] if (1..schools.count).cover?(num.to_i)
+    end
+
+    def find_school_by_name_or_number(input)
+      find_school(input) || find_school_by_number(input)
+    end
   end
 
   def initialize(name, level, link)

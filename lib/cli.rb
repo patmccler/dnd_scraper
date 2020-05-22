@@ -54,6 +54,7 @@ class Cli
       @messenger.no_schools_for_spells_message
     else
       @messenger.choose_school_message
+      @messenger.print_school_list
       handle_input_to_list_spells(schools)
     end
   end
@@ -61,8 +62,16 @@ class Cli
   # Gets input and see if user has picked a spell class
   def handle_input_to_list_schools(schools)
     prompt = @messenger.choose_school_prompt
+
     loop_until_input_is(exit?, back?, prompt) do |input|
-      # TODO: School choices here
+      if (school = Spell.find_school_by_name_or_number(input))
+        Spells.all.select{ |s| s.school == school }
+        prompt_for_choose_spell(school, school.spells)
+      elsif eq_no_case?(input, "list")
+        @messenger.print_school_list
+      else
+        @messenger.invalid_input_message
+      end
     end
   end
 

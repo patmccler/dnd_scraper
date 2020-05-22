@@ -24,13 +24,20 @@ class CliMessenger
   end
 
   def choose_school_message
-    # TODO: implement
+    puts "Each spell has a school."
+    puts "Choose from the list to see spells that belong to it."
     puts Spell.schools
+    puts
+  end
+
+  def print_school_list
+    Spell.schools.each_with_index do |school, i|
+      puts "#{i + 1}. #{school}"
+    end
   end
 
   def choose_school_prompt
-    # TODO: implement
-    proc { puts "Pick a school from list" }
+    proc { puts "Pick a school from list, or type list to see the list again" }
   end
 
   def class_spell_prompt(name, spell_count)
