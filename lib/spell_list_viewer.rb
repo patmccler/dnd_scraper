@@ -5,6 +5,7 @@ class SpellListViewer
   end
 
   def print_spells_by_level(level = nil)
+    # TODO: Handle no spells at given level
     spells_h = @spells.each_with_object({}) do |spell, obj|
       obj[spell.level] ||= []
       obj[spell.level] << spell

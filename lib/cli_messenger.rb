@@ -1,23 +1,41 @@
 class CliMessenger
-  def choose_class_message
-    puts "Enter a class number or name from the list"
-    puts "to see which spells that class has available."
-    puts "Enter 'list' to see the list again.\n\n"
+  def choose_class_prompt
+    proc do
+      puts "Enter a class number or name from the list"
+      puts "to see which spells that class has available."
+      puts "Enter 'list' to see the list again.\n\n"
+    end
+  end
+
+  # put once before loop starts
+  def choose_level_message
+    puts "Every spell has a level.\nSome spells can be cast at a higher level"\
+    " than base for more powerful effect, if the character is capable"\
+    " of casting spells at that level.\n\n"
+  end
+
+  # put every time that loop is execupted
+  def choose_level_loop_prompt
+    proc do
+      puts "Choose a level from '0' (or 'cantrip') - '9' to see those"\
+       " spells, 'all' to see all spells, or back to return"
+    end
   end
 
   def class_spell_prompt(name, spell_count)
-    puts "#{name}s have #{spell_count} spells."
-    puts "Enter a level 0 - 9 to see spells of that level for #{name}."
-    puts "Enter 'all' to see them all at once."
-    puts "Enter a spell name to see that spell's info.\n\n"
-  end
-
-  def class_spell_prompt_proc(name, spell_count)
-    proc { class_spell_prompt(name, spell_count) }
+    proc do
+      puts "#{name}s have #{spell_count} spells."
+      puts "Enter a level 0 - 9 to see spells of that level for #{name}."
+      puts "Enter 'all' to see them all at once."
+      puts "Enter a spell name to see that spell's info.\n\n"
+    end
   end
 
   def lookup_by_loop_prompt
-    proc { puts "Type 'class', 'school', or 'level'" }
+    proc do
+      puts "How do you want to look up spells?"
+      puts "\t'class', 'school', or 'level'"
+    end
   end
 
   def farewell_message
@@ -52,6 +70,6 @@ class CliMessenger
     puts "Spells have both a level and a school,"
     puts "and can be learned by one or more classes.\n\n"
     puts "Follow the prompts, type 'back to return to the previous screen"
-    puts "Or type 'exit' to quit at any time."
+    puts "Or type 'exit' to quit at any time.\n\n"
   end
 end

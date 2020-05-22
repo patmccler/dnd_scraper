@@ -5,7 +5,8 @@ class Cli
   def call
     @messenger = CliMessenger.new
     @messenger.welcome_message
-    prompt_for_choose_class
+    # prompt_for_choose_class
+    prompt_for_lookup_type
     @messenger.farewell_message
   end
 
@@ -15,8 +16,8 @@ class Cli
   end
 
   def handle_input_to_choose_lookup_type
-    prompt = lookup_by_loop_prompt
-    loop_until_input_is(exit?, prompt) do |input|
+    prompt = @messenger.lookup_by_loop_prompt
+    loop_until_input_is(exit?, nil, prompt) do |input|
       input = input.downcase
       if input == "class" then prompt_for_choose_class
       elsif input == "level" then prompt_for_choose_level
@@ -28,12 +29,14 @@ class Cli
   end
 
   def prompt_for_choose_level
-    prompt = choose_level_loop_prompt
-    loop_until_input_is(exit?, prompt) do |input|
+    @messenger.choose_level_message
+
+    prompt = @messenger.choose_level_loop_prompt
+    loop_until_input_is(exit?, back?, prompt) do |input|
       input = input.downcase
-      if input == "class" then prompt_for_choose_class
-      elsif input == "level" then prompt_for_choose_level
-      elsif input == "school" then prompt_for_choose_school
+      if Spell.valid_level?(i_from_s(input))
+        puts "PRINTING LEVEL #{i_from_s(input)} SPELLS"
+        # TODO: display these
       else
         @messenger.invalid_input_message
       end
@@ -48,7 +51,8 @@ class Cli
   # At the top level of CLI, waiting for user input
   #
   def handle_input_to_choose_class
-    loop_until_input_is(exit?, proc { choose_class_prompt }) do |input|
+    prompt = @messenger.choose_class_prompt
+    loop_until_input_is(exit?, back?, prompt) do |input|
       if (klass = Klass.find_by_name_or_number(input))
         prompt_for_choose_spells(klass)
       elsif eq_no_case?(input, "list")
@@ -57,10 +61,6 @@ class Cli
         @messenger.invalid_input_message
       end
     end
-  end
-
-  def choose_class_prompt
-    @messenger.choose_class_message
   end
 
   def eq_no_case?(str1, str2)
@@ -81,9 +81,9 @@ class Cli
   # Level of the CLI where you can see the spells that a particular class knows
   # Alternately, you can enter a name of a spell to see that spell's info
   def handle_input_to_list_spells(klass_name, spells)
-    prompt = @messenger.class_spell_prompt_proc(klass_name, spells.count)
+    prompt = @messenger.class_spell_prompt(klass_name, spells.count)
 
-    loop_until_input_is(exit_or_back?, prompt) do |input|
+    loop_until_input_is(exit?, back?, prompt) do |input|
       if Spell.valid_level?(lvl = i_from_s(input)) || eq_no_case?(input, "all")
         print_spells_by_level(spells, lvl)
       elsif (spell = spells.find { |s| eq_no_case?(s.name, input) })
@@ -97,19 +97,20 @@ class Cli
   # Checks input for breaking condition before and after loop
   # optionally calls prompt on each loop if not breaking
   # Nestable - if you want to bubble a response up, return it
-  def loop_until_input_is(break_condition, prompt = nil)
+  def loop_until_input_is(exit_condition, back_condition = nil, prompt = nil)
     prompt&.call
-    until break_condition.call((input = gets.chomp))
+    until exit_condition.call(input = gets.chomp) || back_condition&.call(input)
       input = yield input
-      break if break_condition.call(input)
+      break if exit_condition.call(input)
 
       prompt&.call
     end
+    input = "" if back_condition&.call(input)
     input
   end
 
-  def exit_or_back?
-    proc { |input| eq_no_case?(input, "exit") || eq_no_case?(input, "back") }
+  def back?
+    proc { |input| eq_no_case?(input, "back")}
   end
 
   def exit?
