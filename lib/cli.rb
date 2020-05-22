@@ -35,8 +35,8 @@ class Cli
   def handle_input_for_choose_level
     prompt = @messenger.choose_level_loop_prompt
     loop_until_input_is(exit?, back?, prompt) do |input|
-      if Spell.valid_level?(i_from_s(input)) || match_all?(input)
-        print_spells_by_level(Spell.all, Spell.level_from_str(input))
+      if (level = Spell.level_from_str(input)) || match_all?(input)
+        print_spells_by_level(Spell.all, level)
       elsif (spell = Spell.find_by_name_from_list(Spell.all, input))
         print_spell_info(spell)
       else
