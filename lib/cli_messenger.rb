@@ -39,7 +39,7 @@ class CliMessenger
       puts "Enter a level 0 - 9 to see spells of that level for #{name}."
       puts "Enter 'all' to see them all at once."
       puts "Enter a spell name to see that spell's info."
-      puts "Enter 'back' to go back..\n\n"
+      puts "Enter 'back' to go back.\n\n"
     end
   end
 

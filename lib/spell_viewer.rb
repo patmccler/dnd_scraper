@@ -15,8 +15,7 @@ class SpellViewer
     print_header
     print_casting_details
     print_description
-    # return name to keep expect string value on call
-    @spell.name
+    puts
   end
 
   def print_header
