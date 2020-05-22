@@ -22,6 +22,13 @@ class Spell
       level.to_i unless level.is_a? Integer
       LEVELS.cover?(level)
     end
+
+    def level_from_str(level)
+      level = 0 if level.casecmp("cantrip").zero?
+      level = level.scan(/\-?\d+/)[0] if level.is_a?(String)
+      level = level.to_i if level.is_a? String
+      level if LEVELS.cover?(level)
+    end
   end
 
   def initialize(name, level, link)

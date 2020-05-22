@@ -37,7 +37,10 @@ class CliMessenger
   end
 
   def choose_school_prompt
-    proc { puts "Pick a school from list, or type list to see the list again" }
+    proc do
+      puts "Pick a school from list, or type 'list' to see the list again"
+      puts "type 'back' to go back or 'exit' to quit."
+    end
   end
 
   def spell_list_prompt(name, spell_count)
