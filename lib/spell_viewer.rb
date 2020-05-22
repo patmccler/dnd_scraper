@@ -1,5 +1,3 @@
-require "io/console"
-
 class SpellViewer
   def initialize(spell)
     @printer = Printer.new

@@ -1,7 +1,4 @@
-require "io/console"
-
 class SpellListViewer
-
   def initialize(spell_list)
     @printer = Printer.new
     @spells = spell_list

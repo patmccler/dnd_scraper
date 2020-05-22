@@ -37,7 +37,8 @@ class Scraper
   end
 
   def self.scrape_class_spell_link(class_name)
-    doc.css("#spellcasting + table a[href*=#{class_name.downcase}]").attr("href")&.value || ""
+    class_link_css = "#spellcasting + table a[href*=#{class_name.downcase}]"
+    doc.css(class_link_css).attr("href")&.value || ""
   end
 
   def self.scrape_spells_from_link_by_level(url)
