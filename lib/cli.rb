@@ -46,6 +46,7 @@ class Cli
     end
   end
 
+  # Gets input and see if user has picked a spell class
   def prompt_for_choose_school
     @messenger.choose_school_message
 
@@ -55,8 +56,7 @@ class Cli
     end
   end
 
-  # At the top level of CLI, waiting for user input
-  #
+  # Gets input and see if user has picked a calss
   def prompt_for_choose_class
     @messenger.print_class_list
     loop_until_input_is(exit?, back?, @messenger.choose_class_prompt) do |input|
