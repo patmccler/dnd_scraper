@@ -28,7 +28,8 @@ class Printer
   # with 'pad' spaces around it and 'border' at the edge of the console
   def print_line_centered(str, border: "", pad: 0)
     last = str.split(" ").inject("") do |current_line, word|
-      if curr_line_size(current_line, word, pad, border) > @line_length
+      # + 1 for space at end
+      if curr_line_size(current_line, word, pad, border) + 1 >= @line_length
         # if adding the word would make the line too long,
         # print the line as is and start the next line with the word
         print_center(current_line, border)
@@ -72,7 +73,7 @@ class Printer
 private
 
   def print_center(str, border = "")
-    unless @line_length <= str.length
+    unless @line_length <= curr_line_size(str, "", 0, border)
       pad, extra_space = padding(str.length, border.length)
       str = border + (" " * pad) + str + (" " * (pad + extra_space)) + border
     end
@@ -86,7 +87,7 @@ private
   end
 
   def curr_line_size(curr_line, word, padding, border)
-    curr_line.size + word.size + 2 * padding + border.size
+    curr_line.size + word.size + 2 * padding + border.size * 2
   end
 
   def max_columns(word_tabs)
