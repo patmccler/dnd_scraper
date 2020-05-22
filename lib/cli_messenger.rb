@@ -3,7 +3,7 @@ class CliMessenger
     proc do
       puts "Enter a class number or name from the list"
       puts "to see which spells that class has available."
-      puts "Enter 'list' to see the list again.\n\n"
+      puts "Enter 'list' to see the list again, or 'back' to go back\n\n"
     end
   end
 
@@ -17,8 +17,9 @@ class CliMessenger
   # put every time that loop is execupted
   def choose_level_loop_prompt
     proc do
-      puts "Choose a level from '0' (or 'cantrip') - '9' to see those"\
-       " spells, 'all' to see all spells, or back to return"
+      puts "Enter a number '0' (or 'cantrip') - '9'"
+      puts "\tTo see the spells of that level you know about"
+      puts "Enter 'all' to see all spells, or 'back' to return\n\n"
     end
   end
 
@@ -37,14 +38,15 @@ class CliMessenger
       puts "#{name}s have #{spell_count} spells."
       puts "Enter a level 0 - 9 to see spells of that level for #{name}."
       puts "Enter 'all' to see them all at once."
-      puts "Enter a spell name to see that spell's info.\n\n"
+      puts "Enter a spell name to see that spell's info."
+      puts "Enter 'back' to go back..\n\n"
     end
   end
 
   def lookup_by_loop_prompt
     proc do
       puts "How do you want to look up spells?"
-      puts "\t'class', 'school', or 'level'"
+      puts "\t'class', 'school', or 'level'\n\n"
     end
   end
 

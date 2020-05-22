@@ -16,5 +16,9 @@ module Findable
     def find_by_name_or_number(input)
       find_by_name(input) || find_by_number(input)
     end
+
+    def find_by_name_from_list(collection, name)
+      collection.find { |elem| elem.name.casecmp(name).zero? }
+    end
   end
 end

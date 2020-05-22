@@ -30,13 +30,16 @@ class Cli
 
   def prompt_for_choose_level
     @messenger.choose_level_message
+    handle_input_for_choose_level
+  end
 
+  def handle_input_for_choose_level
     prompt = @messenger.choose_level_loop_prompt
     loop_until_input_is(exit?, back?, prompt) do |input|
-      input = input.downcase
-      if Spell.valid_level?(i_from_s(input))
-        puts "PRINTING LEVEL #{i_from_s(input)} SPELLS"
-        # TODO: display these
+      if Spell.valid_level?(i_from_s(input)) || match_all?(input)
+        print_spells_by_level(Spell.all, i_from_s(input))
+      elsif (spell = Spell.find_by_name_from_list(Spell.all, input))
+        print_spell_info(spell)
       else
         @messenger.invalid_input_message
       end
@@ -52,16 +55,11 @@ class Cli
     end
   end
 
-  def prompt_for_choose_class
-    @messenger.print_class_list
-    handle_input_to_choose_class
-  end
-
   # At the top level of CLI, waiting for user input
   #
-  def handle_input_to_choose_class
-    prompt = @messenger.choose_class_prompt
-    loop_until_input_is(exit?, back?, prompt) do |input|
+  def prompt_for_choose_class
+    @messenger.print_class_list
+    loop_until_input_is(exit?, back?, @messenger.choose_class_prompt) do |input|
       if (klass = Klass.find_by_name_or_number(input))
         prompt_for_choose_spells(klass)
       elsif eq_no_case?(input, "list")
@@ -93,14 +91,22 @@ class Cli
     prompt = @messenger.class_spell_prompt(klass_name, spells.count)
 
     loop_until_input_is(exit?, back?, prompt) do |input|
-      if Spell.valid_level?(lvl = i_from_s(input)) || eq_no_case?(input, "all")
+      if Spell.valid_level?(lvl = i_from_s(input)) || match_all?(input)
         print_spells_by_level(spells, lvl)
-      elsif (spell = spells.find { |s| eq_no_case?(s.name, input) })
+      elsif (spell = Spell.find_by_name_from_list(spells, input))
         print_spell_info(spell)
       else
         @messenger.invalid_input_message
       end
     end
+  end
+
+  def match_all?(str)
+    eq_no_case?(str, "all")
+  end
+
+  def find_spell(spells, name)
+    spells.find { |s| eq_no_case?(s.name, name) }
   end
 
   # Checks input for breaking condition before and after loop

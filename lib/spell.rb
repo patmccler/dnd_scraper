@@ -45,6 +45,7 @@ class Spell
   end
 
   def self.valid_level?(level)
+    level.to_i unless level.is_a? Integer
     LEVELS.cover?(level)
   end
 
