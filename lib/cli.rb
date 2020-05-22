@@ -47,26 +47,23 @@ class Cli
   end
 
   def prompt_for_choose_school
-    schools = Spell.schools
-
-    if schools.empty?
+    if School.all.empty?
       # don't go into next loop, if no schools exit
       @messenger.no_schools_for_spells_message
     else
       @messenger.choose_school_message
       @messenger.print_school_list
-      handle_input_to_list_spells(schools)
+      handle_input_to_list_schools
     end
   end
 
   # Gets input and see if user has picked a spell class
-  def handle_input_to_list_schools(schools)
+  def handle_input_to_list_schools
     prompt = @messenger.choose_school_prompt
 
     loop_until_input_is(exit?, back?, prompt) do |input|
-      if (school = Spell.find_school_by_name_or_number(input))
-        Spells.all.select{ |s| s.school == school }
-        prompt_for_choose_spell(school, school.spells)
+      if (school = School.find_by_name_or_number(input))
+        handle_input_to_list_spells(school.name, school.spells)
       elsif eq_no_case?(input, "list")
         @messenger.print_school_list
       else
@@ -106,8 +103,8 @@ class Cli
 
   # Level of the CLI where you can see the spells that a particular class knows
   # Alternately, you can enter a name of a spell to see that spell's info
-  def handle_input_to_list_spells(klass_name, spells)
-    prompt = @messenger.class_spell_prompt(klass_name, spells.count)
+  def handle_input_to_list_spells(name, spells)
+    prompt = @messenger.spell_list_prompt(name, spells.count)
 
     loop_until_input_is(exit?, back?, prompt) do |input|
       if Spell.valid_level?(lvl = i_from_s(input)) || match_all?(input)

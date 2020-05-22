@@ -26,24 +26,24 @@ class CliMessenger
   def choose_school_message
     puts "Each spell has a school."
     puts "Choose from the list to see spells that belong to it."
-    puts Spell.schools
     puts
   end
 
   def print_school_list
-    Spell.schools.each_with_index do |school, i|
-      puts "#{i + 1}. #{school}"
+    School.all.each_with_index do |school, i|
+      puts "#{i + 1}. #{school.name}"
     end
+    puts
   end
 
   def choose_school_prompt
     proc { puts "Pick a school from list, or type list to see the list again" }
   end
 
-  def class_spell_prompt(name, spell_count)
+  def spell_list_prompt(name, spell_count)
     proc do
-      puts "#{name}s have #{spell_count} spells."
-      puts "Enter a level 0 - 9 to see spells of that level for #{name}."
+      puts "There are #{spell_count} #{name} spells."
+      puts "Enter a level 0 - 9 to see spells of that level."
       puts "Enter 'all' to see them all at once."
       puts "Enter a spell name to see that spell's info."
       puts "Enter 'back' to go back.\n\n"
@@ -72,9 +72,9 @@ class CliMessenger
     puts "Enter 'level' to see the spells you've learned about, by level"
   end
 
-  def no_schools_for_spells_message
-    puts "No spells have a type yet - Look into specific spells to learn"\
-    " about their types."
+  def no_schools_message
+    puts "No spells know their school yet - Look into specific spells to learn"\
+    " their schools."
   end
 
   def no_spells_for_class_message(name)

@@ -2,9 +2,9 @@
 # A class has many spells, and spells can belong to many classes.
 
 class Spell
-  attr_reader :name, :level, :link
+  attr_reader :name, :level, :link, :school
 
-  attr_accessor :school, :cast_time, :range, :components,
+  attr_accessor :cast_time, :range, :components,
                 :duration, :description, :ritual, :concentration
 
   extend Memoable::ClassMethods
@@ -12,6 +12,7 @@ class Spell
   include Memoable::InstanceMethods
 
   LEVELS = (0..9).freeze
+
   class << self
     def find_or_create(name, level, link)
       find_by_name(name) || new(name, level, link)
@@ -20,22 +21,6 @@ class Spell
     def valid_level?(level)
       level.to_i unless level.is_a? Integer
       LEVELS.cover?(level)
-    end
-
-    def schools
-      all.map(&:school).uniq
-    end
-
-    def find_school(school)
-      schools.find { |s| s.casecmp(school).zero? }
-    end
-
-    def find_school_by_number(num)
-      schools[num.to_i - 1] if (1..schools.count).cover?(num.to_i)
-    end
-
-    def find_school_by_name_or_number(input)
-      find_school(input) || find_school_by_number(input)
     end
   end
 
@@ -46,6 +31,10 @@ class Spell
     save
   end
 
+  def school=(school_name)
+    @school = School.find_or_create(school_name)
+  end
+
   def level=(input)
     @level = input.scan(/\d+/)[0].to_i if input.is_a?(String)
     @level = input if input.is_a?(Integer)
@@ -53,16 +42,16 @@ class Spell
 
   def update_casting_info(cast_time: nil, range: nil, components: nil,
                           duration: nil, concentration: nil)
-    @cast_time = cast_time if cast_time
-    @range = range if range
-    @components = components if components
-    @duration = duration if duration
-    @concentration = concentration unless concentration.nil?
+    self.cast_time = cast_time if cast_time
+    self.range = range if range
+    self.components = components if components
+    self.duration = duration if duration
+    self.concentration = concentration unless concentration.nil?
   end
 
   def update_type_info(ritual: nil, school: nil)
-    @ritual = ritual unless ritual.nil?
-    @school = school if school
+    self.ritual = ritual unless ritual.nil?
+    self.school = school if school
   end
 
   def ritual?
