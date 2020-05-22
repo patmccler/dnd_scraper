@@ -5,22 +5,28 @@ class SpellListViewer
   end
 
   def print_spells_by_level(level = nil)
-    # TODO: Handle no spells at given level
-    spells_h = @spells.each_with_object({}) do |spell, obj|
-      obj[spell.level] ||= []
-      obj[spell.level] << spell
-    end
+    spells_h = @spells.group_by(&:level)
 
     spells_h = { level => spells_h[level] } if level
+    if level && spells_h[level].nil?
+      @printer.print_line_centered "No spells known at level #{level}"
+      return
+    end
 
     spells_h.each do |spell_level, spells|
-      print_spell_group(title: "Level #{spell_level} Spells: #{spells.count}",
-                        spells: spells)
+      print_spell_group(level_title(spell_level, spells.count), spells)
     end
     puts
   end
 
-  def print_spell_group(title:, spells:)
+  def level_title(level, spell_count)
+    "Level #{level} Spells: #{spell_count}"
+  end
+
+  # return an object with level as key for spells
+  def spells_by_level(spells)end
+
+  def print_spell_group(title, spells)
     @printer.print_box(title, "+")
     @printer.print_table(spells.map(&:name))
     puts
