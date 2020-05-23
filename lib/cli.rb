@@ -13,9 +13,9 @@ class Cli
     @messenger.lookup_type_message
     prompt = @messenger.lookup_by_loop_prompt
     loop_until_input_is(exit?, nil, prompt) do |input|
-      if eq_no_case?(input, "class") then prompt_for_choose_class
-      elsif eq_no_case?(input, "level") then prompt_for_choose_level
-      elsif eq_no_case?(input, "school") then prompt_for_choose_school
+      if eql_no_case?(input, "class") then prompt_for_choose_class
+      elsif eql_no_case?(input, "level") then prompt_for_choose_level
+      elsif eql_no_case?(input, "school") then prompt_for_choose_school
       else
         @messenger.invalid_input_message
       end
@@ -44,7 +44,7 @@ class Cli
     loop_until_input_is(exit?, back?, prompt) do |input|
       if (school = School.find_by_name_or_number(input))
         handle_input_while_list_spells(school.spells, name: school.name)
-      elsif eq_no_case?(input, "list")
+      elsif eql_no_case?(input, "list")
         @messenger.print_memoable_list(School)
       else
         @messenger.invalid_input_message
@@ -58,7 +58,7 @@ class Cli
     loop_until_input_is(exit?, back?, @messenger.choose_class_prompt) do |input|
       if (klass = Klass.find_by_name_or_number(input))
         prompt_on_class_chosen(klass)
-      elsif eq_no_case?(input, "list")
+      elsif eql_no_case?(input, "list")
         @messenger.print_memoable_list(Klass)
       else
         @messenger.invalid_input_message
@@ -66,7 +66,7 @@ class Cli
     end
   end
 
-  def eq_no_case?(str1, str2)
+  def eql_no_case?(str1, str2)
     str1.casecmp(str2).zero? if str1 && str2
   end
 
@@ -85,7 +85,7 @@ class Cli
     prompt = @messenger.spell_list_prompt(spells.count, name: name)
 
     loop_until_input_is(exit?, back?, prompt) do |input|
-      if (lvl = Spell.level_from_str(input)) || eq_no_case?(input, "all")
+      if (lvl = Spell.level_from_str(input)) || eql_no_case?(input, "all")
         print_spells_by_level(spells, lvl)
       elsif (spell = Spell.find_by_name_from_list(spells, input))
         print_spell_info(spell)
@@ -112,11 +112,11 @@ class Cli
   end
 
   def back?
-    proc { |input| eq_no_case?(input, "back") }
+    proc { |input| eql_no_case?(input, "back") }
   end
 
   def exit?
-    proc { |input| eq_no_case?(input, "exit") }
+    proc { |input| eql_no_case?(input, "exit") }
   end
 
   def print_spell_info(spell)

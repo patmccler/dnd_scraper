@@ -45,7 +45,8 @@ class SpellScraper
   # <SCHOOL> Cantrip
   # Pattern finds the first word without numbers in it
   def self.find_spell_school(str)
-    str.scan(/(?:^|\s)(\w+)(?=$|\s)/)[0][0].capitalize
+    str = str.tr("^0-9a-zA-Z ", "")
+    str.scan(/(?:\s|^)(\D\w+)(?=\b)/)[0][0].capitalize
   end
 
   def self.find_cast_time(cast_info_p)

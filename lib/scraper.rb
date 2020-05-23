@@ -19,18 +19,6 @@ class Scraper
     doc.css("#character + table tbody td:nth-child(2) a").map(&:text)
   end
 
-  # moved from scrape class above may need this later
-  def self.class_spell_links
-    # gets the last column of the table at the bottom
-    # these are the links to the class spell lists
-    doc.css("#spellcasting + table tbody td:last-child a")
-       .each_with_object({}) do |link, classes|
-         href = link["href"]
-         klass = href.split("/")[2].sub("_spells", "").capitalize
-         classes[klass] = href
-       end
-  end
-
   def self.scrape_class_spells(klass)
     klass_spell_path = scrape_class_spell_link(klass.name)
     scrape_spells_from_link_by_level(URL + klass_spell_path)
