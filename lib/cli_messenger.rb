@@ -14,15 +14,6 @@ class CliMessenger
     " of casting spells at that level.\n\n"
   end
 
-  # put every time that loop is execupted
-  def choose_level_loop_prompt
-    proc do
-      puts "Enter a number '0' (or 'cantrip') - '9'"
-      puts "\tTo see the spells of that level you know about"
-      puts "Enter 'all' to see all spells, or 'back' to return\n\n"
-    end
-  end
-
   def choose_school_message
     puts "Each spell has a school."
     puts "Choose from the list to see spells that belong to it."
@@ -37,14 +28,12 @@ class CliMessenger
     end
   end
 
-  def spell_list_prompt(spell_count, name: nil)
-    proc do
-      puts "There are #{spell_count} #{name ? name + ' ' : ''}spells."
-      puts "Enter a level 0 - 9 to see spells of that level."
-      puts "Enter 'all' to see them all at once."
-      puts "Enter a spell name to see that spell's info."
-      puts "Enter 'back' to go back.\n\n"
-    end
+  def farewell_message
+    puts "Thanks for taking a look!"
+  end
+
+  def invalid_input_message
+    puts "Invalid Input. Try again?\n\n"
   end
 
   def lookup_by_loop_prompt
@@ -52,14 +41,6 @@ class CliMessenger
       puts "How do you want to look up spells?"
       puts "\t'class', 'school', or 'level'\n\n"
     end
-  end
-
-  def farewell_message
-    puts "Thanks for taking a look!"
-  end
-
-  def invalid_input_message
-    puts "Invalid Input. Try again?\n\n"
   end
 
   def lookup_type_message
@@ -84,6 +65,16 @@ class CliMessenger
       puts "#{i + 1}. #{klass_instance.name}"
     end
     puts
+  end
+
+  def spell_list_prompt(spell_count, name: nil)
+    proc do
+      puts "There are #{spell_count} #{name ? name + ' ' : ''}spell(s)."
+      puts "Enter a level 0 - 9 to see spells of that level."
+      puts "Enter 'all' to see them all at once."
+      puts "Enter a spell name to see that spell's info."
+      puts "Enter 'back' to go back.\n\n"
+    end
   end
 
   def welcome_message

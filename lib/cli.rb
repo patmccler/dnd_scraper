@@ -85,7 +85,7 @@ class Cli
     prompt = @messenger.spell_list_prompt(spells.count, name: name)
 
     loop_until_input_is(exit?, back?, prompt) do |input|
-      if (lvl = Spell.level_from_str(input)) || eq_no_case?(str, "all")
+      if (lvl = Spell.level_from_str(input)) || eq_no_case?(input, "all")
         print_spells_by_level(spells, lvl)
       elsif (spell = Spell.find_by_name_from_list(spells, input))
         print_spell_info(spell)
