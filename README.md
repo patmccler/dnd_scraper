@@ -13,9 +13,10 @@ So instead of a database of spells, this is more akin to a collection of spells 
 
 # Instructions
 Visit https://github.com/patmccler/dnd_scraper to see the repository.
-Click the button to copy the ssh url, or otherwise clone the repository
+Click the button to copy the ssh url, or otherwise clone the repository.
+See [this link](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) for help cloning a repository.
 
-Run `ruby bin/run.rb` from the root of the project to start the application.
+Run `ruby bin/run.rb` in your terminal from the root of the project to start the application.
 
 The program should start and prompt the user with a few choices. These choices determine which spells you can see and learn more about
 - Class
