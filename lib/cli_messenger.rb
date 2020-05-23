@@ -80,8 +80,8 @@ class CliMessenger
   end
 
   def print_memoable_list(klass)
-    klass.all.each_with_index do |klass, i|
-      puts "#{i + 1}. #{klass.name}"
+    klass.all.each_with_index do |klass_instance, i|
+      puts "#{i + 1}. #{klass_instance.name}"
     end
     puts
   end
