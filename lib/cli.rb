@@ -37,7 +37,7 @@ class Cli
     end
   end
 
-  # Gets input and see if user has picked a spell class
+  # Gets input and see if user has picked a school of spells
   def handle_input_while_list_schools
     prompt = @messenger.choose_school_prompt
 
@@ -85,7 +85,7 @@ class Cli
     prompt = @messenger.spell_list_prompt(spells.count, name: name)
 
     loop_until_input_is(exit?, back?, prompt) do |input|
-      if (lvl = Spell.level_from_str(input)) || match_all?(input)
+      if (lvl = Spell.level_from_str(input)) || eq_no_case?(str, "all")
         print_spells_by_level(spells, lvl)
       elsif (spell = Spell.find_by_name_from_list(spells, input))
         print_spell_info(spell)
@@ -93,10 +93,6 @@ class Cli
         @messenger.invalid_input_message
       end
     end
-  end
-
-  def match_all?(str)
-    eq_no_case?(str, "all")
   end
 
   # Checks input for breaking condition before and after loop
