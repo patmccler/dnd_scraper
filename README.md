@@ -18,9 +18,9 @@ The program should start and prompt the user with a few choices. These choices d
   - Display spells: enter a number 0-9 or type all
     - from here, you can enter a level to see spells of that level known by the class
     - a table of spells will print
-- Dig in to a spell: Enter the name of a spell known by the class
-  - use the above tables if you aren't sure
-  - this is when the spells more detailed info is scraped
+  - Dig in to a spell: Enter the name of a spell known by the class
+    - use the above tables if you aren't sure
+    - this is when the spells more detailed info is scraped
 - School - see a listing of Schools for spells you have already accessed
   - This will be empty to start! You have to learn about the spells elsewhere
   - Once populated, a list of schools will be displayed
