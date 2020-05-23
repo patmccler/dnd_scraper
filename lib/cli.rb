@@ -5,22 +5,17 @@ class Cli
   def call
     @messenger = CliMessenger.new
     @messenger.welcome_message
-    prompt_for_lookup_type
+    handle_input_while_choose_lookup_type
     @messenger.farewell_message
   end
 
-  def prompt_for_lookup_type
+  def handle_input_while_choose_lookup_type
     @messenger.lookup_type_message
-    handle_input_to_choose_lookup_type
-  end
-
-  def handle_input_to_choose_lookup_type
     prompt = @messenger.lookup_by_loop_prompt
     loop_until_input_is(exit?, nil, prompt) do |input|
-      input = input.downcase
-      if input == "class" then prompt_for_choose_class
-      elsif input == "level" then prompt_for_choose_level
-      elsif input == "school" then prompt_for_choose_school
+      if eq_no_case?(input, "class") then prompt_for_choose_class
+      elsif eq_no_case?(input, "level") then prompt_for_choose_level
+      elsif eq_no_case?(input, "school") then prompt_for_choose_school
       else
         @messenger.invalid_input_message
       end
@@ -29,7 +24,7 @@ class Cli
 
   def prompt_for_choose_level
     @messenger.choose_level_message
-    handle_input_to_list_spells(Spell.all)
+    handle_input_while_list_spells(Spell.all)
   end
 
   def prompt_for_choose_school
@@ -38,17 +33,17 @@ class Cli
       @messenger.no_schools_message
     else
       @messenger.choose_school_message
-      handle_input_to_list_schools
+      handle_input_while_list_schools
     end
   end
 
   # Gets input and see if user has picked a spell class
-  def handle_input_to_list_schools
+  def handle_input_while_list_schools
     prompt = @messenger.choose_school_prompt
 
     loop_until_input_is(exit?, back?, prompt) do |input|
       if (school = School.find_by_name_or_number(input))
-        handle_input_to_list_spells(school.spells, name: school.name)
+        handle_input_while_list_spells(school.spells, name: school.name)
       elsif eq_no_case?(input, "list")
         @messenger.print_memoable_list(School)
       else
@@ -62,7 +57,7 @@ class Cli
     @messenger.print_memoable_list(Klass)
     loop_until_input_is(exit?, back?, @messenger.choose_class_prompt) do |input|
       if (klass = Klass.find_by_name_or_number(input))
-        prompt_for_choose_spells(klass)
+        prompt_on_class_chosen(klass)
       elsif eq_no_case?(input, "list")
         @messenger.print_memoable_list(Klass)
       else
@@ -75,18 +70,18 @@ class Cli
     str1.casecmp(str2).zero? if str1 && str2
   end
 
-  def prompt_for_choose_spells(klass)
+  def prompt_on_class_chosen(klass)
     if klass.spell_less?
-      # don't go into next loop, if no spells exit
+      # don't go into next loop, if no spells exist
       @messenger.no_spells_for_class_message(klass.name)
     else
-      handle_input_to_list_spells(klass.spells, name: klass.name)
+      handle_input_while_list_spells(klass.spells, name: klass.name)
     end
   end
 
   # Level of the CLI where you can see the spells that a particular class knows
   # Alternately, you can enter a name of a spell to see that spell's info
-  def handle_input_to_list_spells(spells, name: nil)
+  def handle_input_while_list_spells(spells, name: nil)
     prompt = @messenger.spell_list_prompt(spells.count, name: name)
 
     loop_until_input_is(exit?, back?, prompt) do |input|
