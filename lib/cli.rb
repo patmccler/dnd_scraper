@@ -106,6 +106,7 @@ class Cli
 
       prompt&.call
     end
+    # Break this loop, but dont bubble it up to outer loop
     input = "" if back_condition&.call(input)
     input
   end
@@ -124,11 +125,5 @@ class Cli
 
   def print_spells_by_level(spells, level = nil)
     SpellListViewer.new(spells).print_spells_by_level(level)
-  end
-
-  # returns nil if no number, not 0 like .to_i
-  def i_from_s(input)
-    int = input.scan(/\-?\d+/)[0]
-    int.to_i if int.is_a?(String)
   end
 end
