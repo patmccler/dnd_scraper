@@ -33,8 +33,8 @@ class SpellScraper
   end
 
   def self.update_description(spell, doc)
-    # Gets all the p elements after the casting description
-    desc = doc.css(".col-md-9 p:nth-of-type(n+3)").map(&:text)
+    # Gets all the elements after the casting description
+    desc = doc.css(".col-md-9 > :nth-child(n+4)").map(&:text)
     desc = desc.join("\n\n")
     spell.description = desc
   end
