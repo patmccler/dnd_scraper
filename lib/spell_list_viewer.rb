@@ -4,16 +4,30 @@ class SpellListViewer
     @spells = spell_list
   end
 
-  def print_spells_by_level(level = nil)
-    spells_h = @spells.group_by(&:level)
-
-    spells_h = { level => spells_h[level] } if level
-    if level && spells_h[level].nil?
-      @printer.print_line_centered "No spells known at level #{level}"
-      return
+  def print_spells(level = nil)
+    if level && @spells.empty?
+      no_spells_at_level_msg(level)
+    elsif !level && @spells.empty?
+      no_spells_msg
+    elsif
+      print_spells_by_level(@spells.group_by(&:level))
     end
+    puts
+  end
 
-    spells_h.each do |spell_level, spells|
+private
+
+  def no_spells_at_level_msg(level)
+    @printer.print_line_centered("No spells known at level #{level}")
+  end
+
+  def no_spells_msg
+    msg = "No spells known yet! Look at some classes to learn more."
+    @printer.print_line_centered(msg)
+  end
+
+  def print_spells_by_level(spells)
+    spells.each do |spell_level, spells|
       print_spell_group(level_title(spell_level, spells.count), spells)
     end
     puts

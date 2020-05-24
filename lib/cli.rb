@@ -124,6 +124,7 @@ class Cli
   end
 
   def print_spells_by_level(spells, level = nil)
-    SpellListViewer.new(spells).print_spells_by_level(level)
+    spells = spells.select { |s| s.level == level} if level
+    SpellListViewer.new(spells).print_spells(level)
   end
 end
