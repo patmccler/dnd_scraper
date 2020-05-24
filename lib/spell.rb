@@ -13,6 +13,13 @@ class Spell
 
   LEVELS = (0..9).freeze
 
+  def initialize(name, level, link)
+    @name = name
+    self.level = level
+    @link = link
+    save
+  end
+
   class << self
     def find_or_create(name, level, link)
       find_by_name(name) || new(name, level, link)
@@ -31,11 +38,13 @@ class Spell
     end
   end
 
-  def initialize(name, level, link)
-    @name = name
-    self.level = level
-    @link = link
-    save
+  def klass_spells
+    KlassSpell.all.select { |klass_spell| klass_spell.spell == self }
+  end
+
+  def klasses
+    # Klass.all.select { |klass| klass.spells.include?(self) }
+    klass_spells.map(&:klass).uniq
   end
 
   def school=(school_name)
