@@ -8,7 +8,7 @@ class SpellViewer
   # Checks if spell has detailed info or not
   def info_complete?(spell)
     spell.cast_time && spell.range && spell.components &&
-      spell.duration && spell.ritual && spell.concentration
+      spell.duration && !spell.ritual.nil? && !spell.concentration.nil?
   end
 
   def print_spell
@@ -16,7 +16,11 @@ class SpellViewer
     print_casting_details
     print_description
     puts
+    print_klasses
+    puts
   end
+
+private
 
   def print_header
     subtext = level_str + @spell.school.name + cantrip_str + ritual_str
@@ -40,6 +44,11 @@ class SpellViewer
   def print_description
     line_length = @printer.line_length
     @printer.print_multiline_center(@spell.description, pad: line_length / 8)
+  end
+
+  def print_klasses
+    klasses = @spell.klasses.map(&:name)
+    @printer.print_line_centered("Known by: #{klasses.join(', ')}")
   end
 
   # Helpers for printing
