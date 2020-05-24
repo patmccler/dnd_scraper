@@ -23,9 +23,6 @@ class SpellListViewer
     "Level #{level} Spells: #{spell_count}"
   end
 
-  # return an object with level as key for spells
-  def spells_by_level(spells)end
-
   def print_spell_group(title, spells)
     @printer.print_box(title, "+")
     @printer.print_table(spells.map(&:name))
