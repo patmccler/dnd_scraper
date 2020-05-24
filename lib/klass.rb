@@ -11,6 +11,15 @@ class Klass
     save
   end
 
+  def self.all
+    # First call of all will set the array to [] and then call generate_all
+    if all_nil?
+      super
+      generate_all
+    end
+    super
+  end
+
   # called first time, scrapes for class names and makes those classes
   # memoable looks for this when first calling .all
   def self.generate_all

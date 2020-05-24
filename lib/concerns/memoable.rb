@@ -11,11 +11,12 @@ module Memoable
     # lets the class define a generate_all method
     # defaults to empty array if none given
     def all
-      if @all.nil? && defined?(generate_all)
-        @all = []
-        generate_all
-      end
       @all ||= []
+    end
+
+    # allow classes implementing memoable to detect first call of all
+    def all_nil?
+      @all.nil?
     end
 
     def count
