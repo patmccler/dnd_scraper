@@ -81,7 +81,7 @@ class CliMessenger
     puts "Hello, and welcome to this DND Spell Information app!"
     puts "Spells have both a level and a school,"
     puts "and can be learned by one or more classes.\n\n"
-    puts "Follow the prompts, type 'back to return to the previous screen"
+    puts "Follow the prompts, type 'back' to return to the previous screen"
     puts "Or type 'exit' to quit at any time.\n\n"
   end
 end
