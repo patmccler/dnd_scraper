@@ -60,8 +60,8 @@ class CliMessenger
     print " can learn any spells!\n\n"
   end
 
-  def print_memoable_list(klass)
-    klass.all.each_with_index do |klass_instance, i|
+  def print_memoable_list(memoable_klass)
+    memoable_klass.all.each_with_index do |klass_instance, i|
       puts "#{i + 1}. #{klass_instance.name}"
     end
     puts
