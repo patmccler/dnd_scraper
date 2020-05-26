@@ -30,7 +30,7 @@ Confirm:
   - Schools have many Spells
 - [X] The application is generally DRY
   - Use findable and memoable module for reused logic in the classes
-  - Build a custom iterator for input because it was very similar logic repeating for each level of the cli
+  - Build a custom loop for input because it was very similar logic repeating for each level of the cli
   - reused logic to handle input and display information whenever possible
     - Klass and School listings, and choosing, are handled by the same logic
     - printing a spell from anywhere handled by the same display logic
