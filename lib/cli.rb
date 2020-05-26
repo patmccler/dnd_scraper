@@ -11,9 +11,9 @@ class Cli
 
   def handle_input_while_choose_lookup_type
     @messenger.lookup_type_message
-    prompt = @messenger.lookup_by_loop_prompt
 
-    loop_until_input_is(exit?, nil, prompt: prompt) do |input|
+    loop_until_input_is(exit?, nil,
+                        prompt: @messenger.lookup_by_loop_prompt) do |input|
       if eql_no_case?(input, "class") then prompt_for_choose_class
       elsif eql_no_case?(input, "level") then prompt_for_choose_level
       elsif eql_no_case?(input, "school") then prompt_for_choose_school
@@ -40,9 +40,8 @@ class Cli
 
   # Gets input and see if user has picked a school of spells
   def handle_input_while_list_schools
-    prompt = @messenger.choose_school_prompt
-
-    loop_until_input_is(exit?, back?, prompt: prompt) do |input|
+    loop_until_input_is(exit?, back?,
+                        prompt: @messenger.choose_school_prompt) do |input|
       if (school = School.find_by_name_or_number(input))
         handle_input_while_list_spells(school.spells, name: school.name)
       elsif eql_no_case?(input, "list") then @messenger.memoable_list(School)
@@ -55,9 +54,9 @@ class Cli
   # Gets input and see if user has picked a calss
   def prompt_for_choose_class
     @messenger.memoable_list(Klass)
-    prompt = @messenger.choose_class_prompt
 
-    loop_until_input_is(exit?, back?, prompt: prompt) do |input|
+    loop_until_input_is(exit?, back?,
+                        prompt: @messenger.choose_class_prompt) do |input|
       if (klass = Klass.find_by_name_or_number(input))
         prompt_on_class_chosen(klass)
       elsif eql_no_case?(input, "list") then @messenger.memoable_list(Klass)
