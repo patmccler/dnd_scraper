@@ -29,7 +29,7 @@ class Printer
   def print_line_centered(str, border: "", pad: 0)
     last = str.split(" ").inject("") do |current_line, word|
       # + 1 for space at end
-      if curr_line_size(current_line, word, pad, border) + 1 >= @line_length
+      if next_line?(str, current_line, word, pad, border)
         # if adding the word would make the line too long,
         # print the line as is and start the next line with the word
         print_center(current_line, border)
@@ -40,6 +40,8 @@ class Printer
     end
     print_center(last, border)
   end
+  ####
+  # Avg not max, but some % of it??
 
   # Takes a single long string
   # splits it on new lines, and prints each of those 'sentances' centered
@@ -88,6 +90,28 @@ private
 
   def curr_line_size(curr_line, word, padding, border)
     curr_line.size + word.size + 2 * padding + border.size * 2
+  end
+
+  # determines if a line will exceed the given space, or otherwise need to wrap
+  def next_line?(str, current_line, next_word, pad, border)
+    available_space = available_space(pad, border)
+    min_lines = (str.length.to_f / available_space).ceil
+    avg_length = avg_length(str, min_lines, available_space)
+    leeway = (available_space - avg_length) * 0.5
+
+    # true means line will be too long, time to start the next line
+    ((current_line.size + next_word.size + 1) > (avg_length + leeway))
+  end
+
+  def avg_length(str, lines, space)
+    avg = str.length.to_f / lines
+    # if too close to even fit, use an extra line
+    avg = str.length.to_f / (lines + 1) if avg / space > 0.9
+    avg
+  end
+
+  def available_space(pad = 0, border = "")
+    @line_length - (2 * (pad + border.size))
   end
 
   def max_columns(word_tabs)
