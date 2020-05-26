@@ -45,8 +45,7 @@ class Cli
     loop_until_input_is(exit?, back?, prompt: prompt) do |input|
       if (school = School.find_by_name_or_number(input))
         handle_input_while_list_spells(school.spells, name: school.name)
-      elsif eql_no_case?(input, "list")
-        @messenger.print_memoable_list(School)
+      elsif eql_no_case?(input, "list") then @messenger.memoable_list(School)
       else
         @messenger.invalid_input_message
       end
@@ -55,14 +54,13 @@ class Cli
 
   # Gets input and see if user has picked a calss
   def prompt_for_choose_class
-    @messenger.print_memoable_list(Klass)
+    @messenger.memoable_list(Klass)
     prompt = @messenger.choose_class_prompt
 
-    loop_until_input_is(exit?, back?, prompt: prompt ) do |input|
+    loop_until_input_is(exit?, back?, prompt: prompt) do |input|
       if (klass = Klass.find_by_name_or_number(input))
         prompt_on_class_chosen(klass)
-      elsif eql_no_case?(input, "list")
-        @messenger.print_memoable_list(Klass)
+      elsif eql_no_case?(input, "list") then @messenger.memoable_list(Klass)
       else
         @messenger.invalid_input_message
       end
@@ -128,7 +126,7 @@ class Cli
   end
 
   def print_spells_by_level(spells, level = nil)
-    spells = spells.select { |s| s.level == level} if level
+    spells = spells.select { |s| s.level == level } if level
     SpellListViewer.new(spells).print_spells(level)
   end
 end

@@ -18,7 +18,7 @@ class CliMessenger
     puts "Each spell has a school."
     puts "Choose from the list to see spells that belong to it."
     puts
-    print_memoable_list(School)
+    memoable_list(School)
   end
 
   def choose_school_prompt
@@ -60,7 +60,7 @@ class CliMessenger
     print " can learn any spells!\n\n"
   end
 
-  def print_memoable_list(memoable_klass)
+  def memoable_list(memoable_klass)
     memoable_klass.all.each_with_index do |klass_instance, i|
       puts "#{i + 1}. #{klass_instance.name}"
     end

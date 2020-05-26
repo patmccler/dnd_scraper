@@ -9,8 +9,7 @@ class SpellListViewer
       no_spells_at_level_msg(level)
     elsif !level && @spells.empty?
       no_spells_msg
-    elsif
-      print_spells_by_level(@spells)
+    elsif print_spells_by_level(@spells)
     end
     puts
   end
@@ -26,9 +25,9 @@ private
     @printer.print_line_centered(msg)
   end
 
-  def print_spells_by_level(spells)
-    spells = spells.group_by(&:level)
-    spells.each do |spell_level, spells|
+  def print_spells_by_level(spells_to_print)
+    spells_to_print = spells_to_print.group_by(&:level)
+    spells_to_print.each do |spell_level, spells|
       print_spell_group(level_title(spell_level, spells.count), spells)
     end
     puts
