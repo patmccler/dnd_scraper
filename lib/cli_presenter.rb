@@ -1,4 +1,4 @@
-class CliMessenger
+class CliPresenter
   def choose_class_prompt
     proc do
       puts "Enter a class number or name from the list"
