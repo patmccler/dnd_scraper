@@ -29,7 +29,7 @@ class Cli
 
   def prompt_for_choose_school
     if School.all.empty?
-      # don't go into next loop, if no schools exit
+      # don't go into next loop, if no schools exist
       presenter.no_schools_message
     else
       presenter.choose_school_message
@@ -87,7 +87,7 @@ class Cli
       if (lvl = Spell.level_from_str(input)) || eql_no_case?(input, "all")
         print_spells_by_level(spells, lvl)
       elsif (spell = Spell.find_by_name_from_list(spells, input))
-        print_spell_info(spell)
+        SpellViewer.new(spell).print_spell
       else
         presenter.invalid_input_message
       end
@@ -117,10 +117,6 @@ class Cli
 
   def exit?
     proc { |input| eql_no_case?(input, "exit") }
-  end
-
-  def print_spell_info(spell)
-    SpellViewer.new(spell).print_spell
   end
 
   def print_spells_by_level(spells, level = nil)
