@@ -1,15 +1,18 @@
 class SpellScraper
-  URL = "https://5thsrd.org/".freeze
+  URL = "https://5thsrd.org".freeze
 
   class << self
     def scrape_spell_info(spell)
       spell_doc = Nokogiri::HTML(HTTParty.get(URL + spell.link).body)
-      tagline = spell_doc.css(".col-md-9 p:first-of-type")[0]
+      tagline = spell_doc.css("h1 + p")[0]
+      # binding.pry
       cast_info = tagline.next_element
+
+      description = cast_info.next_element
 
       update_type_info(spell, tagline.text)
       update_casting_info(spell, cast_info)
-      update_description(spell, spell_doc)
+      update_description(spell, description)
     end
 
   private
@@ -35,11 +38,15 @@ class SpellScraper
       )
     end
 
-    def update_description(spell, doc)
+    def update_description(spell, description)
       # Gets all the elements after the casting description
-      desc = doc.css(".col-md-9 > :nth-child(n+4)").map(&:text)
-      desc = desc.join("\n\n")
-      spell.description = desc
+      desc = [description.text]
+      while(description.next_element) do
+        description = description.next_element
+        desc << description.text
+
+      end
+      spell.description = desc.join("\n\n")
     end
 
     # Assumes the string is in one of the following formats:

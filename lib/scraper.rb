@@ -11,7 +11,7 @@ class Scraper
     # gets the second column of the table under character
     # these are the names of the available classes
     def scrape_classes
-      doc.css("#character + table tbody td:nth-child(2) a").map(&:text)
+      doc.css("#character + div table tbody td:nth-child(2) a").map(&:text)
     end
 
     # returns all the spells the given class knows
@@ -24,7 +24,7 @@ class Scraper
 
     # gets the link to a list of spells for a particular class
     def scrape_class_spell_link(klass_name)
-      klass_link_css = "#spellcasting + table a[href*=#{klass_name.downcase}]"
+      klass_link_css = "#spellcasting + div table a[href*=#{klass_name.downcase}]"
       doc.css(klass_link_css).attr("href")&.value || ""
     end
 
